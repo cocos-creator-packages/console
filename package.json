@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A simple console editor",
   "author": "Firebox Technology",
+  "hosts": {
+      "editor-framework": "0.0.1"
+  },
   "main": "main.js",
   "menus": {
     "Developer/Console": {
