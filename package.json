@@ -9,6 +9,7 @@
   "main": "main.js",
   "menus": {
     "Developer/Console": {
+      "icon": "panel/console/icon.png",
       "message": "console:open"
     }
   },
