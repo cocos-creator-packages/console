@@ -2,22 +2,12 @@ Tester.checkLeaks(false);
 
 describe('<editor-console>', function() {
     var consoleEL;
-
     beforeEach(function ( done ) {
         Editor.sendToCore('console:clear');
-        Editor.Panel.load('console.panel', function ( err, frameEL ) {
-            consoleEL = frameEL;
-            document.body.appendChild(frameEL);
-
+        fixture('panel', function (el) {
+            consoleEL = el;
             done();
         });
-    });
-    afterEach(function ( done ) {
-        document.body.removeChild(consoleEL);
-        consoleEL = null;
-        Editor.Panel.unload('console.panel');
-
-        done();
     });
     after(function () {
         Editor.sendToCore('console:clear');
