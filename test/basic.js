@@ -71,4 +71,17 @@ describe('<editor-console>', function() {
             done();
         }, delay);
     });
+
+    it('should recv ipc "console:clear"', function( done ) {
+        Tester.send( 'console:log', 'foobar 01' );
+        Tester.send( 'console:log', 'foobar 02' );
+        Tester.send( 'console:log', 'foobar 03' );
+        Tester.send( 'console:clear' );
+
+        setTimeout(function () {
+            expect( consoleEL.logs.length ).to.equal(0);
+
+            done();
+        }, delay);
+    });
 });

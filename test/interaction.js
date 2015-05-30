@@ -17,12 +17,12 @@ describe('<editor-console>', function() {
 
     it('should recv clear log when press command+k', function( done ) {
         Tester.send( 'console:log', 'foo bar' );
+        Tester.send( 'console:log', 'foo bar 02' );
+        Tester.send( 'console:log', 'foo bar 03' );
+        Tester.send( 'console:log', 'foo bar 04' );
         setTimeout( function () {
-            expect( consoleEL.logs[0] ).to.deep.equal({
-                type: 'log',
-                text: 'foo bar',
-                count: 0,
-            });
+            Tester.keyDownOn( consoleEL, 'k', 'command' );
+            expect( consoleEL.logs.length ).to.equal(0);
 
             done();
         }, delay);
