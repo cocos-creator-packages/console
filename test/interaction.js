@@ -21,7 +21,7 @@ describe('<editor-console>', function() {
         Tester.send( 'console:log', 'foo bar 03' );
         Tester.send( 'console:log', 'foo bar 04' );
         setTimeout( function () {
-            Tester.keyDownOn( consoleEL, 'k', 'command' );
+            Tester.keydown( consoleEL, 'k', 'command' );
             expect( consoleEL.logs.length ).to.equal(0);
 
             done();
