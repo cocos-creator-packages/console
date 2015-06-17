@@ -1,6 +1,4 @@
 (function () {
-
-var Ipc = require('ipc');
 var Util = require('util');
 
 Editor.registerPanel( 'console.panel', {
