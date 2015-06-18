@@ -2,7 +2,12 @@
     <link rel="import" type="css" href="console.css">
 
     <template>
-        <ul>
+        <editor-toolbar>
+            <editor-button on-click="clear">
+                <i class="fa fa-ban"></i>
+            </editor-button>
+        </editor-toolbar>
+        <ul id="view" class="flex-1">
             <template is="dom-repeat" items="{{logs}}">
                 <li class$="{{item.type}}">
                     <span>{{item.text}}</span>
