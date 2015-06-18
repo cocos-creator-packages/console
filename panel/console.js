@@ -17,10 +17,6 @@ Editor.registerPanel( 'console.panel', {
         }.bind(this));
     },
 
-    attached: function () {
-        EditorUI.update( this, 'logs' );
-    },
-
     'console:log': function ( message ) {
         this.add( 'log', message );
     },
