@@ -5,6 +5,10 @@
     background: #333;
 }
 
+#view {
+    border: 1px solid black;
+}
+
 ul {
     padding: 0px;
     margin: 0px;
