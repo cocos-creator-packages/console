@@ -1,5 +1,3 @@
-Tester.checkLeaks(false);
-
 describe('<editor-console>', function() {
     var consoleEL;
     beforeEach(function ( done ) {
