@@ -11,7 +11,7 @@ describe('<editor-console>', function() {
         Editor.sendToCore('console:clear');
     });
 
-    var delay = 50;
+    var delay = 100;
 
     it('should recv ipc "console:log"', function( done ) {
         Tester.send( 'console:log', 'foo bar' );
