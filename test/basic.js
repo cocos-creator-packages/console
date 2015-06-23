@@ -14,7 +14,7 @@ describe('<editor-console>', function() {
     var delay = 100;
 
     it('should recv ipc "console:log"', function( done ) {
-        Tester.send( 'console:log', 'foo bar' );
+        Tester.FakeCore.send( 'console:log', 'foo bar' );
         setTimeout( function () {
             expect( consoleEL.logs[0] ).to.deep.equal({
                 type: 'log',
@@ -27,7 +27,7 @@ describe('<editor-console>', function() {
     });
 
     it('should recv ipc "console:warn"', function( done ) {
-        Tester.send( 'console:warn', 'foo bar' );
+        Tester.FakeCore.send( 'console:warn', 'foo bar' );
         setTimeout(function () {
             expect( consoleEL.logs[0] ).to.deep.equal({
                 type: 'warn',
@@ -40,7 +40,7 @@ describe('<editor-console>', function() {
     });
 
     it('should recv ipc "console:error"', function( done ) {
-        Tester.send( 'console:error', 'foo bar' );
+        Tester.FakeCore.send( 'console:error', 'foo bar' );
         setTimeout(function () {
             expect( consoleEL.logs[0] ).to.deep.equal({
                 type: 'error',
@@ -53,11 +53,11 @@ describe('<editor-console>', function() {
     });
 
     it('should recv logs in order', function( done ) {
-        Tester.send( 'console:log', 'foobar 01' );
-        Tester.send( 'console:log', 'foobar 02' );
-        Tester.send( 'console:error', 'foobar 03 error' );
-        Tester.send( 'console:warn', 'foobar 04 warn' );
-        Tester.send( 'console:log', 'foobar 05' );
+        Tester.FakeCore.send( 'console:log', 'foobar 01' );
+        Tester.FakeCore.send( 'console:log', 'foobar 02' );
+        Tester.FakeCore.send( 'console:error', 'foobar 03 error' );
+        Tester.FakeCore.send( 'console:warn', 'foobar 04 warn' );
+        Tester.FakeCore.send( 'console:log', 'foobar 05' );
 
         setTimeout(function () {
             expect( consoleEL.logs[0] ).to.have.property( 'text', 'foobar 01' );
@@ -71,10 +71,10 @@ describe('<editor-console>', function() {
     });
 
     it('should recv ipc "console:clear"', function( done ) {
-        Tester.send( 'console:log', 'foobar 01' );
-        Tester.send( 'console:log', 'foobar 02' );
-        Tester.send( 'console:log', 'foobar 03' );
-        Tester.send( 'console:clear' );
+        Tester.FakeCore.send( 'console:log', 'foobar 01' );
+        Tester.FakeCore.send( 'console:log', 'foobar 02' );
+        Tester.FakeCore.send( 'console:log', 'foobar 03' );
+        Tester.FakeCore.send( 'console:clear' );
 
         setTimeout(function () {
             expect( consoleEL.logs.length ).to.equal(0);
