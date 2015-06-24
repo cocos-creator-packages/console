@@ -53,9 +53,12 @@ Editor.registerPanel( 'console.panel', {
         });
 
         // to make sure after layout and before render
-        window.requestAnimationFrame ( function () {
-            this.$.view.scrollTop = this.$.view.scrollHeight;
-        }.bind(this) );
+        if ( !this._scrollTaskID ) {
+            this._scrollTaskID = window.requestAnimationFrame ( function () {
+                this._scrollTaskID = null;
+                this.$.view.scrollTop = this.$.view.scrollHeight;
+            }.bind(this) );
+        }
     },
 
     clear: function () {
