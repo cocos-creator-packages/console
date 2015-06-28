@@ -5,16 +5,65 @@ Editor.registerPanel( 'console.panel', {
     is: 'editor-console',
 
     properties: {
+        logs: {
+            type: Object,
+            notify: true,
+            value: [],
+        },
+
+        _logs: {
+            type: Object,
+            notify: true,
+        },
+
+        option: {
+            type: Number,
+            value: 0,
+            notify: true,
+            observer: 'applyFilter'
+        },
+
+        filterText: {
+            type: String,
+            value: '',
+            notify: true,
+            observer: 'applyFilter'
+        },
+
+        useRegex: {
+            type: Boolean,
+            value: false,
+            notify: true,
+            observer: 'applyFilter'
+        },
     },
 
     ready: function () {
         this.logs = [];
+        this._logs = [];
+        this.options = [
+            { name: 'All'  , value: 0 },
+            { name: 'Log'  , value: 1 },
+            { name: 'Success' , value: 2 },
+            { name: 'Failed', value: 3 },
+            { name: 'Info' , value: 4 },
+            { name: 'Warn' , value: 5 },
+            { name: 'Error' , value: 6 },
+        ];
+
+        this.option = 0;
+        this.collapse = true;
+
         Editor.sendRequestToCore( 'console:query', function ( results ) {
             for ( var i = 0; i < results.length; ++i ) {
                 var item = results[i];
                 this.add( item.type, item.message );
             }
         }.bind(this));
+    },
+
+    _logsChanged: function () {
+        this.applyFilter();
     },
 
     'console:log': function ( message ) {
@@ -52,6 +101,12 @@ Editor.registerPanel( 'console.panel', {
             count: 0,
         });
 
+        this.push('_logs', {
+            type: type,
+            text: text,
+            count: 0,
+        });
+
         // to make sure after layout and before render
         if ( !this._scrollTaskID ) {
             this._scrollTaskID = window.requestAnimationFrame ( function () {
@@ -63,6 +118,7 @@ Editor.registerPanel( 'console.panel', {
 
     clear: function () {
         this.logs = [];
+        this._logs = [];
         Editor.sendToCore('console:clear');
     },
 
@@ -74,6 +130,58 @@ Editor.registerPanel( 'console.panel', {
             text = Util.format.apply(Util, args);
         }
         return text;
+    },
+
+    applyFilter: function () {
+        var tempLogs = [];
+        this.option = parseInt(this.option);
+        if (this.option !== 0) {
+            for (var i = 0; i < this._logs.length; i++) {
+                if (this.options[this.option].name.toLowerCase() === this._logs[i].type) {
+                    tempLogs.push(this._logs[i]);
+                }
+            }
+        }
+        else {
+            tempLogs = this._logs;
+        }
+
+        if (this.filterText !== '') {
+            if (this._logs) {
+                var filter;
+                if ( this.useRegex ) {
+                    try {
+                        filter = new RegExp(this.filterText);
+                        this.$.input.invalid = false;
+                    }
+                    catch ( err ) {
+                        filter = new RegExp("");
+                        this.$.input.invalid = true;
+                    }
+                }
+                else {
+                    filter = this.filterText.toLowerCase();
+                }
+
+                var tempFilterLogs = [];
+                for (var i = 0; i < tempLogs.length; i++) {
+                    if (this.useRegex) {
+                        if (filter.exec(tempLogs[i].text)) {
+                            tempFilterLogs.push(tempLogs[i]);
+                        }
+                    }
+                    else {
+                        if (tempLogs[i].text.toLowerCase().indexOf(filter) > -1) {
+                            tempFilterLogs.push(tempLogs[i]);
+                        }
+                    }
+                }
+                tempLogs = tempFilterLogs;
+            }
+        }
+
+        this.logs = [];
+        this.logs = tempLogs;
     },
 });
 

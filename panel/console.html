@@ -8,11 +8,26 @@
             <editor-button class="red" on-click="clear">
                 <i class="fa fa-ban"></i>
             </editor-button>
+            <editor-button>
+                <i class="fa fa-filter"></i>
+            </editor-button>
+            <editor-input placeholder="filter" id="input" input-value="{{filterText}}"></editor-input>
+            <select value="{{option::change}}">
+                <option value="0">All</option>
+                <option value="1">Log</option>
+                <option value="2">Success</option>
+                <option value="3">Failed</option>
+                <option value="4">Info</option>
+                <option value="5">Warn</option>
+                <option value="6">Error</option>
+            </select>
+            <editor-checkbox checked="{{useRegex}}">Regex</editor-checkbox>
+            <editor-checkbox checked="{{collapse}}">Collapse</editor-checkbox>
         </editor-toolbar>
         <ul id="view" class="flex-1">
             <template is="dom-repeat" items="{{logs}}">
                 <li class$="{{item.type}}">
-                    <span>{{item.text}}</span>
+                    <span>{{item.text}}</span><span>{{item.count}}</span>
                 </li>
             </template>
         </ul>
