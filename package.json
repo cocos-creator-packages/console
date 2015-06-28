@@ -10,6 +10,7 @@
   "menus": {
     "Developer/Console": {
       "icon": "panel/icon.png",
+      "accelerator": "CmdOrCtrl+0",
       "message": "console:open"
     }
   },
