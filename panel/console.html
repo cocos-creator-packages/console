@@ -12,15 +12,15 @@
                 <i class="fa fa-filter"></i>
             </editor-button>
             <editor-input placeholder="filter" id="input" input-value="{{filterText}}"></editor-input>
-            <select value="{{option::change}}">
-                <option value="0">All</option>
-                <option value="1">Log</option>
-                <option value="2">Success</option>
-                <option value="3">Failed</option>
-                <option value="4">Info</option>
-                <option value="5">Warn</option>
-                <option value="6">Error</option>
-            </select>
+            <editor-select value="{{option}}">
+                <editor-option value="All">All</editor-option>
+                <editor-option value="Log">Log</editor-option>
+                <editor-option value="Success">Success</editor-option>
+                <editor-option value="Failed">Failed</editor-option>
+                <editor-option value="Info">Info</editor-option>
+                <editor-option value="Warn">Warn</editor-option>
+                <editor-option value="Error">Error</editor-option>
+            </editor-select>
             <editor-checkbox checked="{{useRegex}}">Regex</editor-checkbox>
             <editor-checkbox checked="{{collapse}}">Collapse</editor-checkbox>
         </editor-toolbar>

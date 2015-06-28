@@ -17,8 +17,8 @@ Editor.registerPanel( 'console.panel', {
         },
 
         option: {
-            type: Number,
-            value: 0,
+            type: String,
+            value: 'All',
             notify: true,
             observer: 'applyFilter'
         },
@@ -41,17 +41,6 @@ Editor.registerPanel( 'console.panel', {
     ready: function () {
         this.logs = [];
         this._logs = [];
-        this.options = [
-            { name: 'All'  , value: 0 },
-            { name: 'Log'  , value: 1 },
-            { name: 'Success' , value: 2 },
-            { name: 'Failed', value: 3 },
-            { name: 'Info' , value: 4 },
-            { name: 'Warn' , value: 5 },
-            { name: 'Error' , value: 6 },
-        ];
-
-        this.option = 0;
         this.collapse = true;
 
         Editor.sendRequestToCore( 'console:query', function ( results ) {
@@ -134,10 +123,9 @@ Editor.registerPanel( 'console.panel', {
 
     applyFilter: function () {
         var tempLogs = [];
-        this.option = parseInt(this.option);
-        if (this.option !== 0) {
+        if (this.option !== 'All') {
             for (var i = 0; i < this._logs.length; i++) {
-                if (this.options[this.option].name.toLowerCase() === this._logs[i].type) {
+                if (this.option.toLowerCase() === this._logs[i].type) {
                     tempLogs.push(this._logs[i]);
                 }
             }
