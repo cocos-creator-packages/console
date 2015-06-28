@@ -96,6 +96,8 @@ Editor.registerPanel( 'console.panel', {
             count: 0,
         });
 
+        this.applyFilter();
+
         // to make sure after layout and before render
         if ( !this._scrollTaskID ) {
             this._scrollTaskID = window.requestAnimationFrame ( function () {
@@ -108,6 +110,7 @@ Editor.registerPanel( 'console.panel', {
     clear: function () {
         this.logs = [];
         this._logs = [];
+        this.applyFilter();
         Editor.sendToCore('console:clear');
     },
 
