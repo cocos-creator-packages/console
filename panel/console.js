@@ -147,7 +147,7 @@ Editor.registerPanel( 'console.panel', {
         }
 
         if (this.filterText !== '') {
-            if (this._logs) {
+            if (typeof(this._logs) === 'object') {
                 var filter;
                 if ( this.useRegex ) {
                     try {
