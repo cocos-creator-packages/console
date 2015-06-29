@@ -3,7 +3,10 @@
 
     <template>
         <div class$="{{_typeClass(type)}}">
-            <span class="flex-1">{{text}}</span>
+            <i class$="{{_foldClass(_hasDetail,folded)}}" on-click="_onFoldClick"></i>
+            <span class="flex-1 detail"><i class$="{{_iconClass(type)}}"></i>
+                <span class="text">{{text}}</span>
+            </span>
             <editor-label class="mini orange" hidden="{{!_showCount(showCount,count)}}">{{_computedCount(count)}}</editor-label>
         </div>
     </template>
