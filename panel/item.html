@@ -3,7 +3,7 @@
 
     <template>
         <div class$="{{_typeClass(type)}}">
-            <i class$="{{_foldClas(folded)}}" on-click="_onClickFold"></i>
+            <i class$="{{_foldClass(_hasDetail,folded)}}" on-click="_onFoldClick"></i>
             <span class="flex-1 detail"><i class$="{{_iconClass(type)}}"></i>
                 <span class="text">{{text}}</span>
             </span>

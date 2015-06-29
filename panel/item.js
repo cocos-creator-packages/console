@@ -27,6 +27,17 @@ Polymer({
             value: false,
             reflectToAttribute: true,
         },
+
+        _hasDetail: {
+            type: Boolean,
+            value: true,
+        }
+    },
+
+    ready: function (){
+        if (this.text.indexOf('\r\n') < 0 && this.text.indexOf('\n') < 0) {
+            this._hasDetail = false;
+        }
     },
 
     _typeClass: function ( type ) {
@@ -59,14 +70,15 @@ Polymer({
         return count + 1;
     },
 
-    _onClickFold: function () {
+    _onFoldClick: function () {
         this.folded = !this.folded;
     },
 
-    _foldClas: function (folded) {
-        if (this.text.indexOf('\r\n') < 0 && this.text.indexOf('\n') < 0) {
+    _foldClass: function ( hasDetail, folded ) {
+        if (!hasDetail) {
             return '';
         }
+
         return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
     },
 });
