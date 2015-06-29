@@ -3,7 +3,6 @@
 }
 
 .item {
-    /* display: block; */
     display: flex;
     flex-direction: row;
 
@@ -13,6 +12,7 @@
     overflow-x: hidden;
 
     color: #999;
+    font-size: 14px;
 }
 
 .item.log {
@@ -38,6 +38,43 @@
     color: #090;
 }
 
-.item>span {
+.icon {
+    width: 20px;
+    min-width: 20px;
+    margin-top: 2px;
+    padding-left: 4px;
+}
+
+.fold {
+    margin-right: 5px;
+    color: #555;
+    cursor: pointer;
+    width: 5px;
+}
+
+.text {
+    font-family: 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+    margin-left: 4px;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.text::selection {
+  background-color: #007acc;
+}
+
+.detail {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+:host[folded] .detail{
+    display: flex;
     white-space: pre-wrap;
+}
+
+:host[folded] .text{
+    margin-left: 8px;
+    -webkit-user-select: initial;
+    cursor: text;
 }
