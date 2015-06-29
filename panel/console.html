@@ -1,4 +1,5 @@
 <link rel="import" href="packages://ui-kit/widget/index.html">
+<link rel="import" href="item.html">
 
 <dom-module id="editor-console">
     <link rel="import" type="css" href="console.css">
@@ -8,11 +9,8 @@
             <editor-button class="red" on-click="clear">
                 <i class="fa fa-ban"></i>
             </editor-button>
-            <editor-button>
-                <i class="fa fa-filter"></i>
-            </editor-button>
             <editor-input placeholder="filter" id="input" input-value="{{filterText}}"></editor-input>
-            <editor-select value="{{option}}">
+            <editor-select value="{{filterOption}}">
                 <editor-option value="All">All</editor-option>
                 <editor-option value="Log">Log</editor-option>
                 <editor-option value="Success">Success</editor-option>
@@ -25,10 +23,14 @@
             <editor-checkbox checked="{{collapse}}">Collapse</editor-checkbox>
         </editor-toolbar>
         <ul id="view" class="flex-1">
-            <template is="dom-repeat" items="{{logs}}">
-                <li class$="{{item.type}}">
-                    <span>{{item.text}}</span><span>{{item.count}}</span>
-                </li>
+            <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
+                <editor-console-item
+                    type="[[item.type]]"
+                    count="[[item.count]]"
+                    text="[[item.text]]"
+                    show-count="[[collapse]]"
+                >
+                </editor-console-item>
             </template>
         </ul>
     </template>

@@ -6,53 +6,45 @@ Editor.registerPanel( 'console.panel', {
 
     properties: {
         logs: {
-            type: Object,
-            notify: true,
-            value: [],
+            type: Array,
+            value: function () {
+                return [];
+            },
         },
 
-        _logs: {
-            type: Object,
-            notify: true,
-        },
-
-        option: {
+        filterOption: {
             type: String,
             value: 'All',
-            notify: true,
-            observer: 'applyFilter'
         },
 
         filterText: {
             type: String,
             value: '',
-            notify: true,
-            observer: 'applyFilter'
         },
 
         useRegex: {
             type: Boolean,
             value: false,
-            notify: true,
-            observer: 'applyFilter'
+        },
+
+        collapse: {
+            type: Boolean,
+            value: true,
+        },
+
+        logsCount: {
+            type: Number,
+            value: 0,
         },
     },
 
     ready: function () {
-        this.logs = [];
-        this._logs = [];
-        this.collapse = true;
-
         Editor.sendRequestToCore( 'console:query', function ( results ) {
             for ( var i = 0; i < results.length; ++i ) {
                 var item = results[i];
                 this.add( item.type, item.message );
             }
         }.bind(this));
-    },
-
-    _logsChanged: function () {
-        this.applyFilter();
     },
 
     'console:log': function ( message ) {
@@ -89,14 +81,7 @@ Editor.registerPanel( 'console.panel', {
             text: text,
             count: 0,
         });
-
-        this.push('_logs', {
-            type: type,
-            text: text,
-            count: 0,
-        });
-
-        this.applyFilter();
+        this.logsCount = this.logs.length;
 
         // to make sure after layout and before render
         if ( !this._scrollTaskID ) {
@@ -109,8 +94,7 @@ Editor.registerPanel( 'console.panel', {
 
     clear: function () {
         this.logs = [];
-        this._logs = [];
-        this.applyFilter();
+        this.logsCount = this.logs.length;
         Editor.sendToCore('console:clear');
     },
 
@@ -124,55 +108,73 @@ Editor.registerPanel( 'console.panel', {
         return text;
     },
 
-    applyFilter: function () {
-        var tempLogs = [];
-        if (this.option !== 'All') {
-            for (var i = 0; i < this._logs.length; i++) {
-                if (this.option.toLowerCase() === this._logs[i].type) {
-                    tempLogs.push(this._logs[i]);
-                }
+    applyFilter: function ( logsCount, filterText, filterOption, useRegex, collapse ) {
+        var filterLogs = [];
+        var type = filterOption.toLowerCase();
+
+        var filter;
+        if ( useRegex ) {
+            try {
+                filter = new RegExp(filterText);
+            }
+            catch ( err ) {
+                filter = new RegExp('');
             }
         }
         else {
-            tempLogs = this._logs;
+            filter = filterText.toLowerCase();
         }
 
-        if (this.filterText !== '') {
-            if (typeof(this._logs) === 'object') {
-                var filter;
-                if ( this.useRegex ) {
-                    try {
-                        filter = new RegExp(this.filterText);
-                        this.$.input.invalid = false;
-                    }
-                    catch ( err ) {
-                        filter = new RegExp("");
-                        this.$.input.invalid = true;
-                    }
+        var i = 0;
+        var log = null;
+
+        for ( i = 0; i < this.logs.length; ++i ) {
+            var log_ = this.logs[i];
+            log = {
+                type: log_.type,
+                text: log_.text,
+                count: 0,
+            };
+
+            if ( type !== 'all' && log.type !== type ) {
+                continue;
+            }
+
+            if ( useRegex ) {
+                if ( !filter.exec(log.text) ) {
+                    continue;
+                }
+            }
+            else {
+                if ( log.text.toLowerCase().indexOf(filter) === -1 ) {
+                    continue;
+                }
+            }
+            filterLogs.push(log);
+        }
+
+
+        if ( collapse && filterLogs.length > 0 ) {
+            var collapseLogs = [];
+            var lastLog = filterLogs[0];
+
+            collapseLogs.push( lastLog );
+
+            for ( i = 1; i < filterLogs.length; ++i ) {
+                log = filterLogs[i];
+                if ( lastLog.text === log.text && lastLog.type === log.type ) {
+                    lastLog.count += 1;
                 }
                 else {
-                    filter = this.filterText.toLowerCase();
+                    collapseLogs.push( log );
+                    lastLog = log;
                 }
-
-                var tempFilterLogs = [];
-                for (var i = 0; i < tempLogs.length; i++) {
-                    if (this.useRegex) {
-                        if (filter.exec(tempLogs[i].text)) {
-                            tempFilterLogs.push(tempLogs[i]);
-                        }
-                    }
-                    else {
-                        if (tempLogs[i].text.toLowerCase().indexOf(filter) > -1) {
-                            tempFilterLogs.push(tempLogs[i]);
-                        }
-                    }
-                }
-                tempLogs = tempFilterLogs;
             }
+
+            filterLogs = collapseLogs;
         }
 
-        this.logs = [];
-        this.logs = tempLogs;
+        return filterLogs;
     },
 });
 

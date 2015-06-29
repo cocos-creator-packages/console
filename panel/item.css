@@ -1,0 +1,43 @@
+:host {
+    display: block;
+}
+
+.item {
+    /* display: block; */
+    display: flex;
+    flex-direction: row;
+
+    list-style-type: none;
+    padding: 5px;
+    padding-left: 10px;
+    overflow-x: hidden;
+
+    color: #999;
+}
+
+.item.log {
+    color: #999;
+}
+.item.error {
+    color: #900;
+}
+.item.warn {
+    color: #990;
+}
+
+.item.info {
+    font-weight: bold;
+    color: #09f;
+}
+.item.failed {
+    font-weight: bold;
+    color: #900;
+}
+.item.success {
+    font-weight: bold;
+    color: #090;
+}
+
+.item>span {
+    white-space: pre-wrap;
+}

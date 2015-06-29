@@ -1,0 +1,12 @@
+<dom-module id="editor-console-item">
+    <link rel="import" type="css" href="item.css">
+
+    <template>
+        <div class$="{{_typeClass(type)}}">
+            <span class="flex-1">{{text}}</span>
+            <editor-label class="mini orange" hidden="{{!_showCount(showCount,count)}}">{{_computedCount(count)}}</editor-label>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript" src="item.js"></script>
