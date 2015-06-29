@@ -71,7 +71,7 @@
 }
 
 .more::after {
-    content: " ( . . . ) ";
+    content: " (...)";
 }
 
 .info {
