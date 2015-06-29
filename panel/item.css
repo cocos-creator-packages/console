@@ -38,7 +38,7 @@
     color: #090;
 }
 
-.describe {
+.desc {
     display: flex;
     flex: 1;
     align-items: center;
@@ -88,7 +88,7 @@
     cursor: text;
 }
 
-:host[folded] .info{
+:host[folded] .info {
     white-space: pre-wrap;
 }
 
