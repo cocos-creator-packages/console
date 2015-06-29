@@ -50,6 +50,7 @@
     color: #555;
     cursor: pointer;
     width: 5px;
+    height: 15px;
 }
 
 .text {
@@ -57,24 +58,19 @@
     margin-left: 4px;
     font-size: 12px;
     margin-top: 2px;
+    -webkit-user-select: initial;
+    cursor: text;
 }
 
 .text::selection {
-  background-color: #007acc;
+    background-color: #007acc;
 }
 
 .detail {
     white-space: nowrap;
-    display: inline-block;
+    display: flex;
 }
 
 :host[folded] .detail{
-    display: flex;
     white-space: pre-wrap;
-}
-
-:host[folded] .text{
-    margin-left: 8px;
-    -webkit-user-select: initial;
-    cursor: text;
 }

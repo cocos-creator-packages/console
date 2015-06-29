@@ -25,7 +25,6 @@ Polymer({
         folded: {
             type: Boolean,
             value: false,
-            observer: '_foldInChanged',
             reflectToAttribute: true,
         },
     },
@@ -41,6 +40,9 @@ Polymer({
             break;
             case 'warn':
                 return 'fa fa-warning icon';
+            break;
+            default:
+                return '';
             break;
         }
     },
@@ -61,12 +63,10 @@ Polymer({
         this.folded = !this.folded;
     },
 
-    _foldInChanged: function () {
-        if (this.folded) {
-            this.foldIconClass = 'fa fold fa-caret-down';
+    _foldClas: function (folded) {
+        if (this.text.indexOf('\r\n') < 0 && this.text.indexOf('\n') < 0) {
+            return '';
         }
-        else {
-            this.foldIconClass = 'fa fold fa-caret-right';
-        }
+        return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
     },
 });
