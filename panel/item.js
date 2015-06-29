@@ -35,7 +35,7 @@ Polymer({
     },
 
     ready: function (){
-        this.description = this.text.split("\n")[0];
+        this.description = this.text.split('\n')[0];
         var firstLine = this.text.indexOf('\n');
         if (firstLine > 0) {
             this.detail = this.text.substring(firstLine + 1);
