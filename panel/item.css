@@ -10,7 +10,7 @@
     padding: 5px;
     padding-left: 10px;
     overflow-x: hidden;
-    font-size: 14px;
+    font-size: 12px;
 
     color: #999;
 }
@@ -39,6 +39,9 @@
 }
 
 .icon {
+    display: flex;
+    align-items: center;
+    height: 15px;
     width: 20px;
     min-width: 20px;
     margin-top: 2px;
@@ -46,7 +49,10 @@
 }
 
 .fold {
+    display: flex;
+    align-items: center;
     margin-right: 5px;
+    margin-top: 2px;
     width: 5px;
     height: 15px;
 
@@ -55,9 +61,7 @@
 }
 
 .text {
-    font-family: 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
     margin-left: 4px;
-    font-size: 12px;
     margin-top: 2px;
     -webkit-user-select: initial;
     cursor: text;
@@ -67,11 +71,30 @@
     background-color: #007acc;
 }
 
-.detail {
-    white-space: nowrap;
-    display: flex;
+.more::after {
+    content: " ( . . . ) ";
 }
 
-:host[folded] .detail{
+.info {
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail {
+    display: none;
+    -webkit-user-select: initial;
+    cursor: text;
+}
+
+:host[folded] .info{
     white-space: pre-wrap;
+}
+
+:host[folded] .detail {
+    display: inline-block;
+}
+
+:host[folded] .more::after {
+    content: "";
 }

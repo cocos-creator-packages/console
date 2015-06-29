@@ -28,15 +28,17 @@ Polymer({
             reflectToAttribute: true,
         },
 
-        _hasDetail: {
-            type: Boolean,
-            value: true,
+        detail: {
+            type: String,
+            value: '',
         }
     },
 
     ready: function (){
-        if (this.text.indexOf('\r\n') < 0 && this.text.indexOf('\n') < 0) {
-            this._hasDetail = false;
+        this.description = this.text.split("\n")[0];
+        var firstLine = this.text.indexOf('\n');
+        if (firstLine > 0) {
+            this.detail = this.text.substring(firstLine + 1);
         }
     },
 
@@ -58,6 +60,15 @@ Polymer({
         }
     },
 
+    _textClass: function (detail) {
+        if (detail !== '') {
+            return 'text more';
+        }
+        else {
+            return 'text';
+        }
+    },
+
     _showCount: function ( showCount, count ) {
         if ( showCount && count > 0 ) {
             return true;
@@ -74,11 +85,10 @@ Polymer({
         this.folded = !this.folded;
     },
 
-    _foldClass: function ( hasDetail, folded ) {
-        if (!hasDetail) {
-            return '';
+    _foldClass: function ( detail, folded ) {
+        if (detail === '') {
+            return;
         }
-
         return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
     },
 });
