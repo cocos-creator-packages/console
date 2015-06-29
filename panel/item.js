@@ -61,7 +61,7 @@ Polymer({
     },
 
     _textClass: function (detail) {
-        if (detail !== '') {
+        if (detail) {
             return 'text more';
         }
         else {
@@ -86,7 +86,7 @@ Polymer({
     },
 
     _foldClass: function ( detail, folded ) {
-        if (detail === '') {
+        if (!detail) {
             return;
         }
         return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
