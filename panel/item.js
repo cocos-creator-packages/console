@@ -5,6 +5,7 @@ Polymer({
         type: {
             type: String,
             value: 'log',
+            reflectToAttribute: true,
         },
 
         count: {

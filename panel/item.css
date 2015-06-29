@@ -74,6 +74,10 @@
     content: " (...)";
 }
 
+.detail::selection {
+    background-color: #007acc;
+}
+
 .info {
     white-space: nowrap;
     display: flex;
@@ -82,7 +86,7 @@
 
 .detail {
     display: none;
-    margin-left: 22px;
+    margin-left: 14px;
     white-space: pre-wrap;
     -webkit-user-select: initial;
     cursor: text;
@@ -98,4 +102,12 @@
 
 :host[folded] .more::after {
     content: "";
+}
+
+:host[type^="error"] .detail{
+    margin-left: 38px;
+}
+
+:host[type^="warn"] .detail{
+    margin-left: 38px;
 }
