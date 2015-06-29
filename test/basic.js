@@ -19,6 +19,8 @@ describe('<editor-console>', function() {
             expect( consoleEL.logs[0] ).to.deep.equal({
                 type: 'log',
                 text: 'foo bar',
+                desc: 'foo bar',
+                detail: '',
                 count: 0,
             });
 
@@ -32,6 +34,8 @@ describe('<editor-console>', function() {
             expect( consoleEL.logs[0] ).to.deep.equal({
                 type: 'warn',
                 text: 'foo bar',
+                desc: 'foo bar',
+                detail: '',
                 count: 0,
             });
 
@@ -45,6 +49,8 @@ describe('<editor-console>', function() {
             expect( consoleEL.logs[0] ).to.deep.equal({
                 type: 'error',
                 text: 'foo bar',
+                desc: 'foo bar',
+                detail: '',
                 count: 0,
             });
 

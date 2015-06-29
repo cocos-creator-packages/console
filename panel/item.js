@@ -13,7 +13,12 @@ Polymer({
             value: 0,
         },
 
-        text: {
+        desc: {
+            type: String,
+            value: '',
+        },
+
+        detail: {
             type: String,
             value: '',
         },
@@ -28,19 +33,9 @@ Polymer({
             value: false,
             reflectToAttribute: true,
         },
-
-        detail: {
-            type: String,
-            value: '',
-        }
     },
 
-    ready: function (){
-        this.description = this.text.split('\n')[0];
-        var firstLine = this.text.indexOf('\n');
-        if (firstLine > 0) {
-            this.detail = this.text.substring(firstLine + 1);
-        }
+    ready: function () {
     },
 
     _typeClass: function ( type ) {
@@ -51,13 +46,12 @@ Polymer({
         switch (type) {
             case 'error':
                 return 'fa fa-times-circle icon';
-            break;
+
             case 'warn':
                 return 'fa fa-warning icon';
-            break;
+
             default:
                 return '';
-            break;
         }
     },
 
@@ -83,7 +77,7 @@ Polymer({
     },
 
     _onFoldClick: function () {
-        this.folded = !this.folded;
+        this.set( 'folded', !this.folded );
     },
 
     _foldClass: function ( detail, folded ) {

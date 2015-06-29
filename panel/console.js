@@ -76,9 +76,18 @@ Editor.registerPanel( 'console.panel', {
     },
 
     add: function ( type, text ) {
+        var desc = text.split('\n')[0];
+        var detail = '';
+        var firstLine = text.indexOf('\n');
+        if (firstLine > 0) {
+            detail = text.substring(firstLine + 1);
+        }
+
         this.push('logs', {
             type: type,
             text: text,
+            desc: desc,
+            detail: detail,
             count: 0,
         });
         this.logsCount = this.logs.length;
@@ -96,16 +105,6 @@ Editor.registerPanel( 'console.panel', {
         this.logs = [];
         this.logsCount = this.logs.length;
         Editor.sendToCore('console:clear');
-    },
-
-    _format: function ( args ) {
-        var text = args.length > 0 ?  args[0] : '';
-        if (args.length <= 1) {
-            text = '' + text;
-        } else {
-            text = Util.format.apply(Util, args);
-        }
-        return text;
     },
 
     applyFilter: function ( logsCount, filterText, filterOption, useRegex, collapse ) {
@@ -130,9 +129,12 @@ Editor.registerPanel( 'console.panel', {
 
         for ( i = 0; i < this.logs.length; ++i ) {
             var log_ = this.logs[i];
+
             log = {
                 type: log_.type,
                 text: log_.text,
+                desc: log_.desc,
+                detail: log_.detail,
                 count: 0,
             };
 
@@ -150,6 +152,7 @@ Editor.registerPanel( 'console.panel', {
                     continue;
                 }
             }
+
             filterLogs.push(log);
         }
 
@@ -162,6 +165,7 @@ Editor.registerPanel( 'console.panel', {
 
             for ( i = 1; i < filterLogs.length; ++i ) {
                 log = filterLogs[i];
+
                 if ( lastLog.text === log.text && lastLog.type === log.type ) {
                     lastLog.count += 1;
                 }
