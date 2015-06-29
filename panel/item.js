@@ -43,7 +43,7 @@ Polymer({
     },
 
     _typeClass: function ( type ) {
-        return 'item layout horizontal ' + type;
+        return 'item layout  ' + type;
     },
 
     _iconClass: function (type) {
