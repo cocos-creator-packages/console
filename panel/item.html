@@ -3,11 +3,15 @@
 
     <template>
         <div class$="{{_typeClass(type)}}">
-            <i class$="{{_foldClass(_hasDetail,folded)}}" on-click="_onFoldClick"></i>
-            <span class="flex-1 detail"><i class$="{{_iconClass(type)}}"></i>
-                <span class="text">{{text}}</span>
-            </span>
-            <editor-label class="mini orange" hidden="{{!_showCount(showCount,count)}}">{{_computedCount(count)}}</editor-label>
+            <div class="desc">
+                <i class$="{{_foldClass(detail,folded)}}" on-click="_onFoldClick"></i>
+                <i class$="{{_iconClass(type)}}"></i>
+                <span class="flex-1 info">
+                    <span class$="{{_textClass(detail)}}">{{description}}</span>
+                </span>
+                <editor-label class="mini orange" hidden="{{!_showCount(showCount,count)}}">{{_computedCount(count)}}</editor-label>
+            </div>
+            <span class="detail">{{detail}}</span>
         </div>
     </template>
 </dom-module>
