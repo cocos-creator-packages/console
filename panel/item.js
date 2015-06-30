@@ -57,10 +57,7 @@ Polymer({
 
     _textClass: function (detail) {
         if (detail) {
-            return 'text more';
-        }
-        else {
-            return 'text';
+            return 'more';
         }
     },
 

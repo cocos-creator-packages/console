@@ -42,25 +42,25 @@
     display: flex;
     flex: 1;
     align-items: center;
+    overflow: hidden;
 }
 
 .icon {
-    width: 20px;
-    min-width: 20px;
+    width: 15px;
+    min-width: 15px;
     margin-top: 2px;
-    padding-left: 4px;
 }
 
 .fold {
-    margin-right: 5px;
+    padding: 2px;
     margin-top: 2px;
-    width: 5px;
+    width: 15px;
+    text-align: center;
     color: #555;
     cursor: pointer;
 }
 
 .text {
-    margin-left: 4px;
     margin-top: 2px;
     -webkit-user-select: initial;
     cursor: text;
@@ -71,7 +71,15 @@
 }
 
 .more::after {
-    content: " (...)";
+    content: "[...]";
+    cursor: pointer;
+    color: #555;
+    padding: 0px 4px;
+}
+
+.more:hover {
+    text-decoration: underline;
+    color: #555;
 }
 
 .detail::selection {
@@ -86,7 +94,7 @@
 
 .detail {
     display: none;
-    margin-left: 14px;
+    margin-left: 19px;
     white-space: pre-wrap;
     -webkit-user-select: initial;
     cursor: text;
@@ -102,12 +110,13 @@
 
 :host[folded] .more::after {
     content: "";
+    display: none;
 }
 
 :host[type^="error"] .detail{
-    margin-left: 38px;
+    margin-left: 34px;
 }
 
 :host[type^="warn"] .detail{
-    margin-left: 38px;
+    margin-left: 34px;
 }
