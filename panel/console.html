@@ -20,7 +20,8 @@
                 <editor-option value="Error">Error</editor-option>
             </editor-select>
             <editor-checkbox checked="{{useRegex}}">Regex</editor-checkbox>
-            <editor-checkbox checked="{{collapse}}">Collapse</editor-checkbox>
+            <span class="flex-1"></span>
+            <editor-checkbox class="toggle orange" checked="{{collapse}}">Collapse</editor-checkbox>
         </editor-toolbar>
         <ul id="view" class="flex-1">
             <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
