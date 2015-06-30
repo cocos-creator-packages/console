@@ -54,7 +54,8 @@
 .fold {
     margin-right: 5px;
     margin-top: 2px;
-    width: 5px;
+    width: 15px;
+    text-align: center;
     color: #555;
     cursor: pointer;
 }
@@ -71,7 +72,13 @@
 }
 
 .more::after {
-    content: " (...)";
+    content: "[ . . . ]";
+    cursor: pointer;
+    padding: 0px 4px;
+}
+
+.more:hover {
+    text-decoration: underline;
 }
 
 .detail::selection {
@@ -86,7 +93,7 @@
 
 .detail {
     display: none;
-    margin-left: 14px;
+    margin-left: 24px;
     white-space: pre-wrap;
     -webkit-user-select: initial;
     cursor: text;
@@ -102,12 +109,13 @@
 
 :host[folded] .more::after {
     content: "";
+    display: none;
 }
 
 :host[type^="error"] .detail{
-    margin-left: 38px;
+    margin-left: 48px;
 }
 
 :host[type^="warn"] .detail{
-    margin-left: 38px;
+    margin-left: 48px;
 }
