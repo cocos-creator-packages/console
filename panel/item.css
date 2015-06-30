@@ -61,7 +61,6 @@
 }
 
 .text {
-    /*margin-left: 4px;*/
     margin-top: 2px;
     -webkit-user-select: initial;
     cursor: text;
@@ -74,11 +73,13 @@
 .more::after {
     content: "[...]";
     cursor: pointer;
+    color: #555;
     padding: 0px 4px;
 }
 
 .more:hover {
     text-decoration: underline;
+    color: #555;
 }
 
 .detail::selection {
