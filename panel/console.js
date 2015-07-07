@@ -1,6 +1,4 @@
 (function () {
-var Util = require('util');
-
 Editor.registerPanel( 'console.panel', {
     is: 'editor-console',
 
