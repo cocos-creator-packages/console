@@ -22,7 +22,8 @@
       "icon": "panel/icon.png",
       "height": 300,
       "shortcuts": {
-        "command+k": "clear"
+        "command+k": "clear",
+        "ctrl+k": "clear"
       },
       "messages": [
         "console:log",
