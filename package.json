@@ -4,7 +4,7 @@
   "description": "A simple console editor",
   "author": "Firebox Technology",
   "hosts": {
-    "editor-framework": "^0.3.12"
+    "editor-framework": "^0.3.14"
   },
   "main": "main.js",
   "menus": {
