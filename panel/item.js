@@ -1,6 +1,4 @@
 Polymer({
-    is: 'editor-console-item',
-
     properties: {
         type: {
             type: String,

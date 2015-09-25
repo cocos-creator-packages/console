@@ -1,7 +1,5 @@
 (function () {
 Editor.registerPanel( 'console.panel', {
-    is: 'editor-console',
-
     properties: {
         logs: {
             type: Array,
