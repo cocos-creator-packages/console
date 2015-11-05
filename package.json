@@ -35,9 +35,5 @@
         "console:clear"
       ]
     }
-  },
-  "tests": [
-    "test/basic.html",
-    "test/interaction.html"
-  ]
+  }
 }
