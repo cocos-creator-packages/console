@@ -1,96 +1,72 @@
 'use strict';
 
 describe('Basic', function() {
-  let consoleEL;
+  Helper.runPanel( 'console.panel' );
 
-  beforeEach(function ( done ) {
-    Helper.createFrom('packages://console/test/fixtures/panel.html', el => {
-      consoleEL = el;
-      document.body.appendChild(consoleEL);
-      done();
+  it('should recv ipc "console:log"', function() {
+    let targetEL = Helper.targetEL;
+
+    Helper.recv('console:log', 'foo bar');
+
+    expect(targetEL.logs[0] ).to.deep.equal({
+      type: 'log',
+      text: 'foo bar',
+      desc: 'foo bar',
+      detail: '',
+      count: 0,
     });
   });
 
-  afterEach(function ( done ) {
-    consoleEL.remove();
-    done();
+  it('should recv ipc "console:warn"', function() {
+    let targetEL = Helper.targetEL;
+
+    Helper.recv('console:warn', 'foo bar');
+    expect(targetEL.logs[0] ).to.deep.equal({
+      type: 'warn',
+      text: 'foo bar',
+      desc: 'foo bar',
+      detail: '',
+      count: 0,
+    });
   });
 
-  let delay = 100;
+  it('should recv ipc "console:error"', function() {
+    let targetEL = Helper.targetEL;
 
-  it('should recv ipc "console:log"', function( done ) {
-    consoleEL['console:log']('foo bar');
-    setTimeout(() => {
-      expect( consoleEL.logs[0] ).to.deep.equal({
-        type: 'log',
-        text: 'foo bar',
-        desc: 'foo bar',
-        detail: '',
-        count: 0,
-      });
-
-      done();
-    }, delay);
+    Helper.recv('console:error', 'foo bar');
+    expect(targetEL.logs[0] ).to.deep.equal({
+      type: 'error',
+      text: 'foo bar',
+      desc: 'foo bar',
+      detail: '',
+      count: 0,
+    });
   });
 
-  it('should recv ipc "console:warn"', function( done ) {
-    consoleEL['console:warn']('foo bar');
-    setTimeout(() => {
-      expect( consoleEL.logs[0] ).to.deep.equal({
-        type: 'warn',
-        text: 'foo bar',
-        desc: 'foo bar',
-        detail: '',
-        count: 0,
-      });
+  it('should recv logs in order', function() {
+    let targetEL = Helper.targetEL;
 
-      done();
-    }, delay);
+    Helper.recv('console:log', 'foobar 01');
+    Helper.recv('console:log', 'foobar 02');
+    Helper.recv('console:error', 'foobar 03 error');
+    Helper.recv('console:warn', 'foobar 04 warn');
+    Helper.recv('console:log', 'foobar 05');
+
+    expect( targetEL.logs[0] ).to.have.property( 'text', 'foobar 01' );
+    expect( targetEL.logs[1] ).to.have.property( 'text', 'foobar 02' );
+    expect( targetEL.logs[2] ).to.have.property( 'text', 'foobar 03 error' );
+    expect( targetEL.logs[3] ).to.have.property( 'text', 'foobar 04 warn' );
+    expect( targetEL.logs[4] ).to.have.property( 'text', 'foobar 05' );
   });
 
-  it('should recv ipc "console:error"', function( done ) {
-    consoleEL['console:error']('foo bar');
-    setTimeout(() => {
-      expect( consoleEL.logs[0] ).to.deep.equal({
-        type: 'error',
-        text: 'foo bar',
-        desc: 'foo bar',
-        detail: '',
-        count: 0,
-      });
+  it('should recv ipc "console:clear"', function() {
+    let targetEL = Helper.targetEL;
 
-      done();
-    }, delay);
-  });
+    Helper.recv('console:log', 'foobar 01');
+    Helper.recv('console:log', 'foobar 02');
+    Helper.recv('console:log', 'foobar 03');
+    Helper.recv('console:clear');
 
-  it('should recv logs in order', function( done ) {
-    consoleEL['console:log']('foobar 01');
-    consoleEL['console:log']('foobar 02');
-    consoleEL['console:error']('foobar 03 error');
-    consoleEL['console:warn']('foobar 04 warn');
-    consoleEL['console:log']('foobar 05');
-
-    setTimeout(() => {
-      expect( consoleEL.logs[0] ).to.have.property( 'text', 'foobar 01' );
-      expect( consoleEL.logs[1] ).to.have.property( 'text', 'foobar 02' );
-      expect( consoleEL.logs[2] ).to.have.property( 'text', 'foobar 03 error' );
-      expect( consoleEL.logs[3] ).to.have.property( 'text', 'foobar 04 warn' );
-      expect( consoleEL.logs[4] ).to.have.property( 'text', 'foobar 05' );
-
-      done();
-    }, delay);
-  });
-
-  it('should recv ipc "console:clear"', function( done ) {
-    consoleEL['console:log']('foobar 01');
-    consoleEL['console:log']('foobar 02');
-    consoleEL['console:log']('foobar 03');
-    consoleEL['console:clear']();
-
-    setTimeout(() => {
-      expect( consoleEL.logs.length ).to.equal(0);
-
-      done();
-    }, delay);
+    expect( targetEL.logs.length ).to.equal(0);
   });
 });

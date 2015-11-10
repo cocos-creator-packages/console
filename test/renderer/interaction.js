@@ -1,36 +1,17 @@
 'use strict';
 
 describe('Interaction', function() {
-  let consoleEL;
+  Helper.runPanel( 'console.panel' );
 
-  beforeEach(function ( done ) {
-    Helper.createFrom('packages://console/test/fixtures/panel.html', el => {
-      consoleEL = el;
-      document.body.appendChild(consoleEL);
-      done();
-    });
-  });
+  it('should recv clear log when press command+k', function() {
+    let targetEL = Helper.targetEL;
 
-  afterEach(function ( done ) {
-    consoleEL.remove();
-    Editor.sendToCore('console:clear');
+    Helper.recv('console:log', 'foo bar');
+    Helper.recv('console:log', 'foo bar 02');
+    Helper.recv('console:log', 'foo bar 03');
+    Helper.recv('console:log', 'foo bar 04');
 
-    done();
-  });
-
-  let delay = 50;
-
-  it('should recv clear log when press command+k', function( done ) {
-    consoleEL['console:log']('foo bar');
-    consoleEL['console:log']('foo bar 02');
-    consoleEL['console:log']('foo bar 03');
-    consoleEL['console:log']('foo bar 04');
-
-    setTimeout(() => {
-      consoleEL.clear();
-      expect( consoleEL.logs.length ).to.equal(0);
-
-      done();
-    }, delay);
+    Helper.keydown( targetEL, 'k', ['command'] );
+    expect( targetEL.logs.length ).to.equal(0);
   });
 });
