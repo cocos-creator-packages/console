@@ -11,7 +11,7 @@
   },
   "main": "main.js",
   "menus": {
-    "Developer/Console": {
+    "i18n:MAIN_MENU.panel.title/i18n:MAIN_MENU.panel.console": {
       "icon": "panel/icon.png",
       "accelerator": "CmdOrCtrl+0",
       "message": "console:open"
@@ -21,7 +21,7 @@
     "panel": {
       "frame": "panel/console.html",
       "type": "dockable",
-      "title": "Console",
+      "title": "i18n:MAIN_MENU.panel.console",
       "icon": "panel/icon.png",
       "height": 300,
       "shortcuts": {
