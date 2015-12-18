@@ -19,6 +19,7 @@
   },
   "panels": {
     "panel": {
+      "popable": false,
       "frame": "panel/console.html",
       "type": "dockable",
       "title": "i18n:MAIN_MENU.panel.console",
