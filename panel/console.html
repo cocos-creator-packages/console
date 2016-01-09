@@ -2,40 +2,66 @@
 <link rel="import" href="item.html">
 
 <dom-module id="editor-console">
-    <link rel="import" type="css" href="console.css">
+  <template>
+    <style>
+      :host {
+        @apply(--layout-vertical);
+      }
 
-    <template>
-        <editor-toolbar>
-            <editor-button class="red" on-click="clear">
-                <i class="fa fa-ban"></i>
-            </editor-button>
-            <editor-input placeholder="filter" id="input" input-value="{{filterText}}"></editor-input>
-            <editor-select value="{{filterOption}}">
-                <editor-option value="All" text="All">All</editor-option>
-                <editor-option value="Log" text="Log">Log</editor-option>
-                <editor-option value="Success" text="Success">Success</editor-option>
-                <editor-option value="Failed" text="Failed">Failed</editor-option>
-                <editor-option value="Info" text="Info">Info</editor-option>
-                <editor-option value="Warn" text="Warn">Warn</editor-option>
-                <editor-option value="Error" text="Error">Error</editor-option>
-            </editor-select>
-            <editor-checkbox checked="{{useRegex}}">Regex</editor-checkbox>
-            <span class="flex-1"></span>
-            <editor-checkbox class="toggle orange" checked="{{collapse}}">Collapse</editor-checkbox>
-        </editor-toolbar>
-        <ul id="view" class="flex-1">
-            <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
-                <editor-console-item
-                    type="[[item.type]]"
-                    count="[[item.count]]"
-                    desc="[[item.desc]]"
-                    detail="[[item.detail]]"
-                    show-count="[[collapse]]"
-                >
-                </editor-console-item>
-            </template>
-        </ul>
-    </template>
+      #view {
+        border: 1px solid black;
 
-    <script type="text/javascript" src="console.js"></script>
+        box-shadow: inset 0 0 8px 2px rgba(0,0,0,0.2);
+        background: #333;
+      }
+
+      ul {
+        padding: 0px;
+        margin: 0px;
+
+        overflow: auto;
+      }
+
+      editor-console-item {
+        background: #222;
+      }
+
+      editor-console-item:nth-child(even) {
+        background: #292929;
+      }
+    </style>
+
+    <editor-toolbar>
+      <editor-button class="red" on-click="clear">
+        <i class="fa fa-ban"></i>
+      </editor-button>
+      <editor-input placeholder="filter" id="input" input-value="{{filterText}}"></editor-input>
+      <editor-select value="{{filterOption}}">
+        <editor-option value="All" text="All">All</editor-option>
+        <editor-option value="Log" text="Log">Log</editor-option>
+        <editor-option value="Success" text="Success">Success</editor-option>
+        <editor-option value="Failed" text="Failed">Failed</editor-option>
+        <editor-option value="Info" text="Info">Info</editor-option>
+        <editor-option value="Warn" text="Warn">Warn</editor-option>
+        <editor-option value="Error" text="Error">Error</editor-option>
+      </editor-select>
+      <editor-checkbox checked="{{useRegex}}">Regex</editor-checkbox>
+      <span class="flex-1"></span>
+      <editor-checkbox class="toggle orange" checked="{{collapse}}">Collapse</editor-checkbox>
+    </editor-toolbar>
+    <ul id="view" class="flex-1">
+      <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
+        <editor-console-item
+          type="[[item.type]]"
+          count="[[item.count]]"
+          desc="[[item.desc]]"
+          detail="[[item.detail]]"
+          show-count="[[collapse]]"
+        >
+        </editor-console-item>
+      </template>
+    </ul>
+  </template>
+
+  <script type="text/javascript" src="console.js"></script>
 </dom-module>

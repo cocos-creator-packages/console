@@ -96,7 +96,7 @@
         this._scrollTaskID = window.requestAnimationFrame (() => {
           this._scrollTaskID = null;
           this.$.view.scrollTop = this.$.view.scrollHeight;
-        } );
+        });
       }
     },
 
@@ -111,27 +111,24 @@
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
-      var filterLogs = [];
-      var type = filterOption.toLowerCase();
+      let filterLogs = [];
+      let type = filterOption.toLowerCase();
 
-      var filter;
+      let filter;
       if ( useRegex ) {
         try {
           filter = new RegExp(filterText);
-        }
-        catch ( err ) {
+        } catch ( err ) {
           filter = new RegExp('');
         }
-      }
-      else {
+      } else {
         filter = filterText.toLowerCase();
       }
 
-      var i = 0;
-      var log = null;
+      let log = null;
 
-      for ( i = 0; i < this.logs.length; ++i ) {
-        var log_ = this.logs[i];
+      for ( let i = 0; i < this.logs.length; ++i ) {
+        let log_ = this.logs[i];
 
         log = {
           type: log_.type,
@@ -149,8 +146,7 @@
           if ( !filter.exec(log.text) ) {
             continue;
           }
-        }
-        else {
+        } else {
           if ( log.text.toLowerCase().indexOf(filter) === -1 ) {
             continue;
           }
@@ -161,18 +157,17 @@
 
 
       if ( collapse && filterLogs.length > 0 ) {
-        var collapseLogs = [];
-        var lastLog = filterLogs[0];
+        let collapseLogs = [];
+        let lastLog = filterLogs[0];
 
         collapseLogs.push( lastLog );
 
-        for ( i = 1; i < filterLogs.length; ++i ) {
+        for ( let i = 1; i < filterLogs.length; ++i ) {
           log = filterLogs[i];
 
           if ( lastLog.text === log.text && lastLog.type === log.type ) {
             lastLog.count += 1;
-          }
-          else {
+          } else {
             collapseLogs.push( log );
             lastLog = log;
           }

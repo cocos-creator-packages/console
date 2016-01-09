@@ -1,84 +1,88 @@
-Editor.registerElement({
+(() => {
+  'use strict';
+
+  Editor.registerElement({
     properties: {
-        type: {
-            type: String,
-            value: 'log',
-            reflectToAttribute: true,
-        },
+      type: {
+        type: String,
+        value: 'log',
+        reflectToAttribute: true,
+      },
 
-        count: {
-            type: Number,
-            value: 0,
-        },
+      count: {
+        type: Number,
+        value: 0,
+      },
 
-        desc: {
-            type: String,
-            value: '',
-        },
+      desc: {
+        type: String,
+        value: '',
+      },
 
-        detail: {
-            type: String,
-            value: '',
-        },
+      detail: {
+        type: String,
+        value: '',
+      },
 
-        showCount: {
-            type: Boolean,
-            value: false,
-        },
+      showCount: {
+        type: Boolean,
+        value: false,
+      },
 
-        folded: {
-            type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-        },
+      folded: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true,
+      },
     },
 
-    ready: function () {
+    ready () {
     },
 
-    _typeClass: function ( type ) {
-        return 'item layout  ' + type;
+    _typeClass ( type ) {
+      return 'item layout vertical ' + type;
     },
 
-    _iconClass: function (type) {
-        switch (type) {
-            case 'error':
-                return 'fa fa-times-circle icon';
+    _iconClass (type) {
+      switch (type) {
+        case 'error':
+          return 'fa fa-times-circle icon';
 
-            case 'warn':
-                return 'fa fa-warning icon';
+        case 'warn':
+          return 'fa fa-warning icon';
 
-            default:
-                return '';
-        }
+        default:
+          return '';
+      }
     },
 
-    _textClass: function (detail) {
-        if (detail) {
-            return 'more';
-        }
+    _textClass (detail) {
+      if (detail) {
+        return 'more';
+      }
     },
 
-    _showCount: function ( showCount, count ) {
-        if ( showCount && count > 0 ) {
-            return true;
-        }
+    _showCount ( showCount, count ) {
+      if ( showCount && count > 0 ) {
+        return true;
+      }
 
-        return false;
+      return false;
     },
 
-    _computedCount: function ( count ) {
-        return count + 1;
+    _computedCount ( count ) {
+      return count + 1;
     },
 
-    _onFoldClick: function () {
-        this.set( 'folded', !this.folded );
+    _onFoldClick () {
+      this.set( 'folded', !this.folded );
     },
 
-    _foldClass: function ( detail, folded ) {
-        if (!detail) {
-            return;
-        }
-        return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
+    _foldClass ( detail, folded ) {
+      if (!detail) {
+        return;
+      }
+      return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
     },
-});
+  });
+})();

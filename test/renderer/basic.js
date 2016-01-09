@@ -6,7 +6,7 @@ describe('Basic', function() {
   it('should recv ipc "console:log"', function() {
     let targetEL = Helper.targetEL;
 
-    Helper.recv('console:log', 'foo bar');
+    Helper.send('console:log', 'foo bar');
 
     expect(targetEL.logs[0] ).to.deep.equal({
       type: 'log',
@@ -20,7 +20,7 @@ describe('Basic', function() {
   it('should recv ipc "console:warn"', function() {
     let targetEL = Helper.targetEL;
 
-    Helper.recv('console:warn', 'foo bar');
+    Helper.send('console:warn', 'foo bar');
     expect(targetEL.logs[0] ).to.deep.equal({
       type: 'warn',
       text: 'foo bar',
@@ -33,7 +33,7 @@ describe('Basic', function() {
   it('should recv ipc "console:error"', function() {
     let targetEL = Helper.targetEL;
 
-    Helper.recv('console:error', 'foo bar');
+    Helper.send('console:error', 'foo bar');
     expect(targetEL.logs[0] ).to.deep.equal({
       type: 'error',
       text: 'foo bar',
@@ -46,11 +46,11 @@ describe('Basic', function() {
   it('should recv logs in order', function() {
     let targetEL = Helper.targetEL;
 
-    Helper.recv('console:log', 'foobar 01');
-    Helper.recv('console:log', 'foobar 02');
-    Helper.recv('console:error', 'foobar 03 error');
-    Helper.recv('console:warn', 'foobar 04 warn');
-    Helper.recv('console:log', 'foobar 05');
+    Helper.send('console:log', 'foobar 01');
+    Helper.send('console:log', 'foobar 02');
+    Helper.send('console:error', 'foobar 03 error');
+    Helper.send('console:warn', 'foobar 04 warn');
+    Helper.send('console:log', 'foobar 05');
 
     expect( targetEL.logs[0] ).to.have.property( 'text', 'foobar 01' );
     expect( targetEL.logs[1] ).to.have.property( 'text', 'foobar 02' );
@@ -62,10 +62,10 @@ describe('Basic', function() {
   it('should recv ipc "console:clear"', function() {
     let targetEL = Helper.targetEL;
 
-    Helper.recv('console:log', 'foobar 01');
-    Helper.recv('console:log', 'foobar 02');
-    Helper.recv('console:log', 'foobar 03');
-    Helper.recv('console:clear');
+    Helper.send('console:log', 'foobar 01');
+    Helper.send('console:log', 'foobar 02');
+    Helper.send('console:log', 'foobar 03');
+    Helper.send('console:clear');
 
     expect( targetEL.logs.length ).to.equal(0);
   });
