@@ -110,6 +110,10 @@
       this.logsCount = this.logs.length;
     },
 
+    open () {
+      Editor.sendToCore('_console:open');
+    },
+
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
       let filterLogs = [];
       let type = filterOption.toLowerCase();
