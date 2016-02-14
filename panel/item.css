@@ -84,7 +84,7 @@
 }
 
 .info {
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   display: flex;
   flex-direction: column;
 }
