@@ -1,11 +1,15 @@
+'use strict';
+
 module.exports = {
-    load: function () {
-    },
+  load () {
+  },
 
-    unload: function () {
-    },
+  unload () {
+  },
 
-    'console:open': function () {
-        Editor.Panel.open('console.panel');
+  messages: {
+    'open' () {
+      Editor.Panel.open('console.panel');
     },
+  }
 };
