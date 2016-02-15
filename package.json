@@ -10,7 +10,7 @@
     "ui-kit": "^0.1.0"
   },
   "main": "main.js",
-  "menus": {
+  "main-menu": {
     "i18n:MAIN_MENU.panel.title/i18n:MAIN_MENU.panel.console": {
       "icon": "panel/icon.png",
       "accelerator": "CmdOrCtrl+0",
