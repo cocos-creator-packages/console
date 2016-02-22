@@ -110,7 +110,7 @@
       this.logsCount = this.logs.length;
     },
 
-    open () {
+    _onOpenLogFile () {
       Editor.sendToPackage( 'console', 'open-log-file' );
     },
 
