@@ -1,5 +1,7 @@
 'use strict';
 
+const Electron = require('electron');
+
 module.exports = {
   load () {
   },
@@ -10,6 +12,10 @@ module.exports = {
   messages: {
     'open' () {
       Editor.Panel.open('console.panel');
+    },
+      
+    'open-log-file': function () {
+      Electron.shell.openItem(Editor.logfile);
     },
   }
 };

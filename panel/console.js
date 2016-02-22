@@ -110,6 +110,10 @@
       this.logsCount = this.logs.length;
     },
 
+    _onOpenLogFile () {
+      Editor.sendToPackage( 'console', 'open-log-file' );
+    },
+
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
       let filterLogs = [];
       let type = filterOption.toLowerCase();
