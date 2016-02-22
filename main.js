@@ -1,17 +1,19 @@
-const Electron = require('electron');
+'use strict';
 
 module.exports = {
-    load: function () {
-    },
+  load () {
+  },
 
-    unload: function () {
-    },
+  unload () {
+  },
 
-    'console:open': function () {
-        Editor.Panel.open('console.panel');
+  messages: {
+    'open' () {
+      Editor.Panel.open('console.panel');
     },
-
-    '_console:open': function () {
-        Electron.shell.openItem(Editor.logfile);
+      
+    'open-log-file': function () {
+      Electron.shell.openItem(Editor.logfile);
     },
+  }
 };
