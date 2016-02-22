@@ -111,7 +111,7 @@
     },
 
     open () {
-      Editor.sendToCore('_console:open');
+      Editor.sendToCore('console:open-log-file');
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
