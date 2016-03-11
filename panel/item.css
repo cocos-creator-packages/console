@@ -26,15 +26,15 @@
 }
 
 .item.info {
-  font-weight: bold;
+  /*font-weight: bold;*/
   color: #09f;
 }
 .item.failed {
-  font-weight: bold;
+  /*font-weight: bold;*/
   color: #c80c0c;
 }
 .item.success {
-  font-weight: bold;
+  /*font-weight: bold;*/
   color: #090;
 }
 
