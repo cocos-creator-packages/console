@@ -111,7 +111,8 @@
     },
 
     _onOpenLogFile () {
-      Editor.sendToPackage( 'console', 'open-log-file' );
+      let rect = this.$.openLogBtn.getBoundingClientRect();
+      Editor.sendToCore('console:popup-open-log-menu', rect.left, rect.bottom + 5 );
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
