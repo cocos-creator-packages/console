@@ -37,6 +37,9 @@
     },
 
     ready () {
+      this._addLogTimeoutID = null;
+      this._logsToAdd = [];
+
       Editor.sendRequestToCore( 'console:query', results => {
         for ( let i = 0; i < results.length; ++i ) {
           let item = results[i];
@@ -82,22 +85,35 @@
         detail = text.substring(firstLine + 1);
       }
 
-      this.push('logs', {
+      this._logsToAdd.push({
         type: type,
         text: text,
         desc: desc,
         detail: detail,
         count: 0,
       });
-      this.logsCount = this.logs.length;
 
-      // to make sure after layout and before render
-      if ( !this._scrollTaskID ) {
-        this._scrollTaskID = window.requestAnimationFrame (() => {
-          this._scrollTaskID = null;
-          this.$.view.scrollTop = this.$.view.scrollHeight;
-        });
+      if (this._addLogTimeoutID) {
+        return;
       }
+
+      this._addLogTimeoutID = setTimeout(() => {
+        this._addLogTimeoutID = null;
+        
+        let args = ['logs', this.logs.length, 0].concat(this._logsToAdd);
+        this.splice.apply(this, args);
+        
+        this._logsToAdd.length = 0;
+        this.logsCount = this.logs.length;
+
+        // to make sure after layout and before render
+        if ( !this._scrollTaskID ) {
+          this._scrollTaskID = window.requestAnimationFrame (() => {
+            this._scrollTaskID = null;
+            this.$.view.scrollTop = this.$.view.scrollHeight;
+          });
+        }
+      }, 50);    
     },
 
     clear () {
