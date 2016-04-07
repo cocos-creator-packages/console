@@ -37,7 +37,7 @@
     },
 
     ready () {
-      Editor.sendRequestToCore( 'console:query', results => {
+      Editor.Ipc.sendToMain( 'editor:console-query', results => {
         for ( let i = 0; i < results.length; ++i ) {
           let item = results[i];
           this.add( item.type, item.message );
@@ -45,31 +45,31 @@
       });
     },
 
-    'console:log' ( message ) {
+    'editor:console-log' ( event, message ) {
       this.add( 'log', message );
     },
 
-    'console:success' ( message ) {
+    'editor:console-success' ( event, message ) {
       this.add( 'success', message );
     },
 
-    'console:failed' ( message ) {
+    'editor:console-failed' ( event, message ) {
       this.add( 'failed', message );
     },
 
-    'console:info' ( message ) {
+    'editor:console-info' ( event, message ) {
       this.add( 'info', message );
     },
 
-    'console:warn' ( message ) {
+    'editor:console-warn' ( event, message ) {
       this.add( 'warn', message );
     },
 
-    'console:error' ( message ) {
+    'editor:console-error' ( event, message ) {
       this.add( 'error', message );
     },
 
-    'console:clear' () {
+    'editor:console-clear' () {
       this._clear();
     },
 
@@ -102,7 +102,7 @@
 
     clear () {
       this._clear();
-      Editor.sendToCore('_console:clear');
+      Editor.Ipc.sendToMain('console:clear');
     },
 
     _clear () {
@@ -111,7 +111,7 @@
     },
 
     _onOpenLogFile () {
-      Editor.sendToPackage( 'console', 'open-log-file' );
+      Editor.Ipc.sendToPackage( 'console', 'open-log-file' );
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {

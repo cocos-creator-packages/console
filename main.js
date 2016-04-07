@@ -13,9 +13,14 @@ module.exports = {
     'open' () {
       Editor.Panel.open('console.panel');
     },
-      
+
     'open-log-file': function () {
       Electron.shell.openItem(Editor.logfile);
+    },
+
+
+    'console:clear' () {
+      Editor.clearLog();
     },
   }
 };
