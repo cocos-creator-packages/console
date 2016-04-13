@@ -37,7 +37,7 @@
     },
 
     ready () {
-      Editor.Ipc.sendToMain( 'editor:console-query', results => {
+      Editor.Ipc.sendToMain( 'editor:console-query', (err,results) => {
         for ( let i = 0; i < results.length; ++i ) {
           let item = results[i];
           this.add( item.type, item.message );
