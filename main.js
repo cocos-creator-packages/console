@@ -11,7 +11,7 @@ module.exports = {
 
   messages: {
     'open' () {
-      Editor.Panel.open('console.panel');
+      Editor.Panel.open('console');
     },
 
     'open-log-file': function () {

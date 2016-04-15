@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  Editor.registerPanel( 'console.panel', {
+  Editor.polymerPanel('console', {
     properties: {
       logs: {
         type: Array,

@@ -6,7 +6,7 @@
   "hosts": {
     "editor-framework": "^0.5.0"
   },
-  "pkgDependencies": {
+  "packages": {
     "ui-kit": "^0.1.0"
   },
   "main": "main.js",
@@ -17,27 +17,25 @@
       "message": "console:open"
     }
   },
-  "panels": {
-    "panel": {
-      "popable": false,
-      "frame": "panel/console.html",
-      "type": "dockable",
-      "title": "i18n:MAIN_MENU.panel.console",
-      "icon": "panel/icon.png",
-      "height": 300,
-      "shortcuts": {
-        "command+k": "clear",
-        "ctrl+k": "clear"
-      },
-      "messages": [
-        "editor:console-log",
-        "editor:console-success",
-        "editor:console-failed",
-        "editor:console-info",
-        "editor:console-warn",
-        "editor:console-error",
-        "editor:console-clear"
-      ]
-    }
+  "panel": {
+    "popable": false,
+    "frame": "panel/console.html",
+    "type": "dockable",
+    "title": "i18n:MAIN_MENU.panel.console",
+    "icon": "panel/icon.png",
+    "height": 300,
+    "shortcuts": {
+      "command+k": "clear",
+      "ctrl+k": "clear"
+    },
+    "messages": [
+      "editor:console-log",
+      "editor:console-success",
+      "editor:console-failed",
+      "editor:console-info",
+      "editor:console-warn",
+      "editor:console-error",
+      "editor:console-clear"
+    ]
   }
 }

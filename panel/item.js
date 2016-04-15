@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  Editor.registerElement({
+  Editor.polymerElement({
     properties: {
       type: {
         type: String,
