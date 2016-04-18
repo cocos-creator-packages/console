@@ -18,8 +18,9 @@
     }
   },
   "panel": {
+    "main": "panel/console.html",
+    "ui": "polymer",
     "popable": false,
-    "frame": "panel/console.html",
     "type": "dockable",
     "title": "i18n:MAIN_MENU.panel.console",
     "icon": "panel/icon.png",
@@ -27,15 +28,6 @@
     "shortcuts": {
       "command+k": "clear",
       "ctrl+k": "clear"
-    },
-    "messages": [
-      "editor:console-log",
-      "editor:console-success",
-      "editor:console-failed",
-      "editor:console-info",
-      "editor:console-warn",
-      "editor:console-error",
-      "editor:console-clear"
-    ]
+    }
   }
 }

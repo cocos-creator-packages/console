@@ -45,32 +45,34 @@
       });
     },
 
-    'editor:console-log' ( event, message ) {
-      this.add( 'log', message );
-    },
+    messages: {
+      'editor:console-log' ( event, message ) {
+        this.add( 'log', message );
+      },
 
-    'editor:console-success' ( event, message ) {
-      this.add( 'success', message );
-    },
+      'editor:console-success' ( event, message ) {
+        this.add( 'success', message );
+      },
 
-    'editor:console-failed' ( event, message ) {
-      this.add( 'failed', message );
-    },
+      'editor:console-failed' ( event, message ) {
+        this.add( 'failed', message );
+      },
 
-    'editor:console-info' ( event, message ) {
-      this.add( 'info', message );
-    },
+      'editor:console-info' ( event, message ) {
+        this.add( 'info', message );
+      },
 
-    'editor:console-warn' ( event, message ) {
-      this.add( 'warn', message );
-    },
+      'editor:console-warn' ( event, message ) {
+        this.add( 'warn', message );
+      },
 
-    'editor:console-error' ( event, message ) {
-      this.add( 'error', message );
-    },
+      'editor:console-error' ( event, message ) {
+        this.add( 'error', message );
+      },
 
-    'editor:console-clear' () {
-      this._clear();
+      'editor:console-clear' () {
+        this._clear();
+      },
     },
 
     add ( type, text ) {
