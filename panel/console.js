@@ -173,28 +173,24 @@
           }
         }
 
-        filterLogs.push(log);
-      }
-
-
-      if ( collapse && filterLogs.length > 0 ) {
-        let collapseLogs = [];
-        let lastLog = filterLogs[0];
-
-        collapseLogs.push( lastLog );
-
-        for ( let i = 1; i < filterLogs.length; ++i ) {
-          log = filterLogs[i];
-
-          if ( lastLog.text === log.text && lastLog.type === log.type ) {
-            lastLog.count += 1;
-          } else {
-            collapseLogs.push( log );
-            lastLog = log;
+        // check duplicate if collapse
+        if (collapse && filterLogs.length > 0) {
+          let loopCount = Math.min(filterLogs.length, 6);
+          let duplicateLog = false;
+          for (let i = filterLogs.length - 1; i > filterLogs.length - loopCount; --i) {
+            let filterLog = filterLogs[i];
+            if (log.text === filterLog.text && log.type === filterLog.type) {
+              filterLog.count += 1;
+              duplicateLog = true;
+              break;
+            }
           }
+          if (duplicateLog === false) {
+            filterLogs.push(log);
+          }
+        } else {
+          filterLogs.push(log);
         }
-
-        filterLogs = collapseLogs;
       }
 
       return filterLogs;
