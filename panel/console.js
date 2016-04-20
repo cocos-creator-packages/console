@@ -37,6 +37,8 @@
     },
 
     ready () {
+      this._addLogTimeoutID = null;
+      this._logsToAdd = [];
       Editor.Ipc.sendToMain( 'editor:console-query', (err,results) => {
         for ( let i = 0; i < results.length; ++i ) {
           let item = results[i];
@@ -84,22 +86,35 @@
         detail = text.substring(firstLine + 1);
       }
 
-      this.push('logs', {
+      this._logsToAdd.push({
         type: type,
         text: text,
         desc: desc,
         detail: detail,
         count: 0,
       });
-      this.logsCount = this.logs.length;
 
-      // to make sure after layout and before render
-      if ( !this._scrollTaskID ) {
-        this._scrollTaskID = window.requestAnimationFrame (() => {
-          this._scrollTaskID = null;
-          this.$.view.scrollTop = this.$.view.scrollHeight;
-        });
+      if (this._addLogTimeoutID) {
+        return;
       }
+
+      this._addLogTimeoutID = setTimeout(() => {
+        this._addLogTimeoutID = null;
+        
+        let args = ['logs', this.logs.length, 0].concat(this._logsToAdd);
+        this.splice.apply(this, args);
+        
+        this._logsToAdd.length = 0;
+        this.logsCount = this.logs.length;
+
+        // to make sure after layout and before render
+        if ( !this._scrollTaskID ) {
+          this._scrollTaskID = window.requestAnimationFrame (() => {
+            this._scrollTaskID = null;
+            this.$.view.scrollTop = this.$.view.scrollHeight;
+          });
+        }
+      }, 50);    
     },
 
     clear () {
@@ -113,7 +128,9 @@
     },
 
     _onOpenLogFile () {
-      Editor.Ipc.sendToPackage( 'console', 'open-log-file' );
+      let rect = this.$.openLogBtn.getBoundingClientRect();
+
+      Editor.Ipc.sendToPackage('console', 'popup-open-log-menu', rect.left, rect.bottom + 5 );
     },
 
     applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
@@ -158,28 +175,24 @@
           }
         }
 
-        filterLogs.push(log);
-      }
-
-
-      if ( collapse && filterLogs.length > 0 ) {
-        let collapseLogs = [];
-        let lastLog = filterLogs[0];
-
-        collapseLogs.push( lastLog );
-
-        for ( let i = 1; i < filterLogs.length; ++i ) {
-          log = filterLogs[i];
-
-          if ( lastLog.text === log.text && lastLog.type === log.type ) {
-            lastLog.count += 1;
-          } else {
-            collapseLogs.push( log );
-            lastLog = log;
+        // check duplicate if collapse
+        if (collapse && filterLogs.length > 0) {
+          let loopCount = Math.min(filterLogs.length, 6);
+          let duplicateLog = false;
+          for (let i = filterLogs.length - 1; i > filterLogs.length - loopCount; --i) {
+            let filterLog = filterLogs[i];
+            if (log.text === filterLog.text && log.type === filterLog.type) {
+              filterLog.count += 1;
+              duplicateLog = true;
+              break;
+            }
           }
+          if (duplicateLog === false) {
+            filterLogs.push(log);
+          }
+        } else {
+          filterLogs.push(log);
         }
-
-        filterLogs = collapseLogs;
       }
 
       return filterLogs;
