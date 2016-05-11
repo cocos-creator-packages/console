@@ -1,7 +1,6 @@
 'use strict';
 
 const Electron = require('electron');
-const BrowserWindow = require('browser-window');
 
 module.exports = {
   load () {
@@ -47,7 +46,7 @@ module.exports = {
       let editorMenu = new Editor.Menu(menuTmpl, event.sender);
       x = Math.floor(x);
       y = Math.floor(y);
-      editorMenu.nativeMenu.popup(BrowserWindow.fromWebContents(event.sender), x, y);
+      editorMenu.nativeMenu.popup(Electron.BrowserWindow.fromWebContents(event.sender), x, y);
       editorMenu.dispose();
     }
   }
