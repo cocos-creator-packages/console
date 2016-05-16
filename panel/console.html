@@ -38,19 +38,32 @@
       <editor-button id="openLogBtn" on-click="_onOpenLogFile">
         <i class="fa fa-file-code-o"></i>
       </editor-button>
-      <editor-input placeholder="filter" id="input" input-value="{{filterText}}" cancelable></editor-input>
-      <editor-select value="{{filterOption}}">
-        <editor-option value="All" text="All">All</editor-option>
-        <editor-option value="Log" text="Log">Log</editor-option>
-        <editor-option value="Success" text="Success">Success</editor-option>
-        <editor-option value="Failed" text="Failed">Failed</editor-option>
-        <editor-option value="Info" text="Info">Info</editor-option>
-        <editor-option value="Warn" text="Warn">Warn</editor-option>
-        <editor-option value="Error" text="Error">Error</editor-option>
-      </editor-select>
-      <editor-checkbox checked="{{useRegex}}">Regex</editor-checkbox>
+      <ui-input
+        id="input"
+        class="tiny"
+        placeholder="filter"
+        value="{{filterText::input}}"
+        cancelable
+        unnavigable
+      ></ui-input>
+      <ui-checkbox
+        unnavigable
+        checked="{{useRegex::change}}">Regex</ui-checkbox>
+      <ui-select
+        value="{{filterOption::confirm}}"
+        class="mini"
+        unnavigable
+      >
+        <option value="All">All</option>
+        <option value="Log">Log</option>
+        <option value="Success">Success</option>
+        <option value="Failed">Failed</option>
+        <option value="Info">Info</option>
+        <option value="Warn">Warn</option>
+        <option value="Error">Error</option>
+      </ui-select>
       <span class="flex-1"></span>
-      <editor-checkbox class="toggle orange" checked="{{collapse}}">Collapse</editor-checkbox>
+      <ui-checkbox unnavigable checked="{{collapse::change}}">Collapse</ui-checkbox>
     </editor-toolbar>
     <ul id="view" class="flex-1">
       <template is="dom-repeat" items="{{applyFilter(logsCount,filterText,filterOption,useRegex,collapse)}}">
