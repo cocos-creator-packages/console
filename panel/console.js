@@ -100,10 +100,10 @@
 
       this._addLogTimeoutID = setTimeout(() => {
         this._addLogTimeoutID = null;
-        
+
         let args = ['logs', this.logs.length, 0].concat(this._logsToAdd);
         this.splice.apply(this, args);
-        
+
         this._logsToAdd.length = 0;
         this.logsCount = this.logs.length;
 
@@ -114,7 +114,7 @@
             this.$.view.scrollTop = this.$.view.scrollHeight;
           });
         }
-      }, 50);    
+      }, 50);
     },
 
     clear () {
