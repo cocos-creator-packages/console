@@ -3,9 +3,6 @@
   "version": "0.1.4",
   "description": "A simple console editor",
   "author": "Firebox Technology",
-  "packages": {
-    "ui-kit": "^0.1.0"
-  },
   "main": "main.js",
   "main-menu": {
     "i18n:MAIN_MENU.panel.title/i18n:MAIN_MENU.panel.console": {
