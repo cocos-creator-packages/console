@@ -94,6 +94,18 @@
         }
 
         this.logsCount = this.logs.length;
+      },
+
+      'console:query-last-error-log' ( event ) {
+        if (!event.reply) {
+          return;
+        }
+
+        let logs = this.logs.filter((log) => {
+          return log.type === 'error' || log.type === 'failed' || log.type === 'warn';
+        });
+
+        event.reply(null, logs[0]);
       }
     },
 
