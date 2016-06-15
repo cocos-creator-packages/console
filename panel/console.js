@@ -75,6 +75,26 @@
       'editor:console-clear' () {
         this._clear();
       },
+
+      'console:clear-errors' ( event, errors) {
+        for (let i = this.logs.length - 1; i >=0; i--) {
+          let log = this.logs[i];
+
+          if (log.type !== 'error' && log.type !== 'failed') {
+            continue;
+          }
+
+          for (let j = 0, l = errors.length; j < l; j++) {
+            let error = errors[j];
+            if (log.text.indexOf(error) !== -1) {
+              this.splice('logs', i, 1);
+              break;
+            }
+          }
+        }
+
+        this.logsCount = this.logs.length;
+      }
     },
 
     add ( type, text ) {
