@@ -76,8 +76,8 @@
         this._clear();
       },
 
-      'console:clear-errors' ( event, errors) {
-        for (let i = this.logs.length - 1; i >=0; i--) {
+      'editor:console-clear-errors' ( event, errors) {
+        for (let i = this.logs.length - 1; i >= 0; i--) {
           let log = this.logs[i];
 
           if (log.type !== 'error' && log.type !== 'failed') {
@@ -94,6 +94,8 @@
         }
 
         this.logsCount = this.logs.length;
+
+        Editor.Ipc.sendToMain('console:clear-errors', errors);
       },
 
       'console:query-last-error-log' ( event ) {

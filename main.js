@@ -40,6 +40,11 @@ module.exports = {
     'console:clear' () {
       Editor.clearLog();
     },
+
+    'console:clear-errors' (event, errors) {
+      Editor.clearErrorLog(errors);
+    },
+
     'popup-open-log-menu': function (event, x, y) {
       let menuTmpl = Editor.Menu.getMenu('open-log-file');
 
