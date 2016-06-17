@@ -42,7 +42,7 @@ module.exports = {
     },
 
     'console:clear-errors' (event, errors) {
-      Editor.clearErrorLog(errors);
+      Editor.clearLog(errors);
     },
 
     'popup-open-log-menu': function (event, x, y) {
