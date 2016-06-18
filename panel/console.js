@@ -72,30 +72,39 @@
         this.add( 'error', message );
       },
 
-      'editor:console-clear' () {
-        this._clear();
-      },
+      'editor:console-clear' ( event, pattern, useRegex ) {
+        if (!pattern) {
+          this._clear();
+          return;
+        }
 
-      'editor:console-clear-errors' ( event, errors) {
+        let filter;
+        if ( useRegex ) {
+          try {
+            filter = new RegExp(pattern);
+          } catch ( err ) {
+            filter = new RegExp('');
+          }
+        } else {
+          filter = pattern;
+        }
+
         for (let i = this.logs.length - 1; i >= 0; i--) {
           let log = this.logs[i];
 
-          if (log.type !== 'error' && log.type !== 'failed') {
-            continue;
-          }
-
-          for (let j = 0, l = errors.length; j < l; j++) {
-            let error = errors[j];
-            if (log.text.indexOf(error) !== -1) {
+          if (useRegex) {
+            if ( filter.exec(log.message) ) {
               this.splice('logs', i, 1);
-              break;
+            }
+          }
+          else {
+            if ( log.text.indexOf(filter) !== -1 ) {
+              this.splice('logs', i, 1);
             }
           }
         }
 
         this.logsCount = this.logs.length;
-
-        Editor.Ipc.sendToMain('console:clear-errors', errors);
       },
 
       'console:query-last-error-log' ( event ) {

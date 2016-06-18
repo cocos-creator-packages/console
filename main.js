@@ -37,12 +37,8 @@ module.exports = {
       Electron.shell.openItem(Editor.logfile);
     },
 
-    'console:clear' () {
-      Editor.clearLog();
-    },
-
-    'console:clear-errors' (event, errors) {
-      Editor.clearLog(errors);
+    'console:clear' ( pattern, useRegex ) {
+      Editor.clearLog( pattern, useRegex );
     },
 
     'popup-open-log-menu': function (event, x, y) {
