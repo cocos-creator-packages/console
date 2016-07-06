@@ -89,7 +89,7 @@ exports.update = function () {
         sources.forEach((item) => {
             var reference = renderCmds[renderCmds.length - 1];
             // 根据 collapse 过滤一遍
-            if (collapse && reference && item.title === reference.title && item.info === reference.info) {
+            if (collapse && reference && item.title === reference.title && item.info === reference.info && item.type === reference.type) {
                 reference.num += 1;
                 return;
             }
