@@ -1,202 +1,155 @@
-(() => {
-  'use strict';
+'use strict';
 
-  Editor.polymerPanel('console', {
-    properties: {
-      logs: {
-        type: Array,
-        value () {
-          return [];
-        },
-      },
+const Vue = require('vue');
 
-      filterOption: {
-        type: String,
-        value: 'All',
-      },
+const ConsoleList = require(Editor.url('packages://console/panel/list'));
+const Manager = require(Editor.url('packages://console/panel/manager'));
+window.mm = Manager;
 
-      filterText: {
-        type: String,
-        value: '',
-      },
+Editor.Panel.extend({
 
-      useRegex: {
-        type: Boolean,
-        value: false,
-      },
+    style: `
+        @import url('app://bower_components/fontawesome/css/font-awesome.min.css');
+        #console { display: flex; flex-direction: column; }
+        header { display: flex; padding: 4px; position: relative; }
+        section { flex: 1; border: 1px solid black; box-shadow: inset 0 0 8px 2px rgba(0,0,0,0.2); background: #333; }
+        
+        ui-checkbox { padding: 3px 4px; }
+        .collapse { position: absolute; right: 0; }
+        
+        section { overflow-y: scroll; position: relative; }
+        section .item { color: #999; line-height: 30px; padding: 0 10px; box-sizing: border-box; position: absolute; top: 0; width: 100%; }
+        section .item[texture=light] { background-color:#292929; }
+        section .item[texture=dark] { background-color:#222; }
+        section .item[type=log] { color: #999; }
+        section .item[type=error] { color: #c80c0c; }
+        section .item[type=warn] { color: #990; }
+        section .item[type=info] { color: #090; }
+        section .item[type=failed] { color: #c80c0c; }
+        section .item[type=success] { color: #090; }
+        section .item i { padding: 0 4px; }
+        section .item i.fold { color: #555; cursor: pointer; padding: 0; }
+        section .item i.fa-caret-right { padding: 0 1px 0 2px; }
+        
+        section div .warp { display: flex; }
+        section div .text { position: relative; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding-right: 2px; }
+        section div .info { margin-left: 35px; }
+        section div .info div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    `,
 
-      collapse: {
-        type: Boolean,
-        value: true,
-      },
+    template: `
+    <div id="console" class="fit">
+        
+        <header>
+            <ui-button class="red small transparent" v-on:confirm="onClear">
+                <i class="icon-block"></i>
+            </ui-button>
+            <ui-button id="openLogBtn" class="small transparent" v-on:click="onPopup">
+                <i class="icon-doc-text"></i>
+            </ui-button>
+            <ui-input v-on:change="onFilterText"></ui-input>
+            <ui-checkbox v-on:confirm="onFilterRegex">Regex</ui-checkbox>
+            <ui-select v-on:confirm="onFilterType">
+                <option value="">All</option>
+                <option value="log">Log</option>
+                <option value="success">Success</option>
+                <option value="failed">Failed</option>
+                <option value="info">Info</option>
+                <option value="warn">Warn</option>
+                <option value="error">Error</option>
+            </ui-select>
+            <ui-checkbox class="collapse" v-on:confirm="onCollapse" checked>Collapse</ui-checkbox>
+        </header>
+        <console-list v-bind:messages="messages"></console-list>
+    </div>
+    `,
 
-      logsCount: {
-        type: Number,
-        value: 0,
-      },
+    $: {
+        console: '#console',
+        openLogBtn: '#openLogBtn'
     },
 
-    ready () {
-      this._addLogTimeoutID = null;
-      this._logsToAdd = [];
-      Editor.Ipc.sendToMain( 'editor:console-query', (err,results) => {
-        for ( let i = 0; i < results.length; ++i ) {
-          let item = results[i];
-          this.add( item.type, item.message );
+    listeners: {
+        'panel-resize' () {
+            Manager.update();
+        },
+        'panel-show' () {
+            Manager.update();
         }
-      });
     },
 
     messages: {
-      'editor:console-log' ( event, message ) {
-        this.add( 'log', message );
-      },
+        'editor:console-log' (event, message) {
+            Manager.addItem({ type: 'log', message: message });
+        },
 
-      'editor:console-success' ( event, message ) {
-        this.add( 'success', message );
-      },
+        'editor:console-success' (event, message) {
+            Manager.addItem({ type: 'success', message: message });
+        },
 
-      'editor:console-failed' ( event, message ) {
-        this.add( 'failed', message );
-      },
+        'editor:console-failed' (event, message) {
+            Manager.addItem({ type: 'failed', message: message });
+        },
 
-      'editor:console-info' ( event, message ) {
-        this.add( 'info', message );
-      },
+        'editor:console-info' (event, message) {
+            Manager.addItem({ type: 'info', message: message });
+        },
 
-      'editor:console-warn' ( event, message ) {
-        this.add( 'warn', message );
-      },
+        'editor:console-warn' (event, message) {
+            Manager.addItem({ type: 'warn', message: message });
+        },
 
-      'editor:console-error' ( event, message ) {
-        this.add( 'error', message );
-      },
+        'editor:console-error' (event, message) {
+            Manager.addItem({ type: 'error', message: message });
+        },
 
-      'editor:console-clear' () {
-        this._clear();
-      },
+        'editor:console-clear' () {
+            Manager.clear();
+        }
     },
 
-    add ( type, text ) {
-      let desc = text.split('\n')[0];
-      let detail = '';
-      let firstLine = text.indexOf('\n');
+    ready () {
+        var openLogBtn = this.$openLogBtn;
+        new Vue({
+            el: this.$console,
+            data: {
+                messages: Manager.renderCmds
+            },
+            methods: {
+                onClear () {
+                    Manager.clear();
+                    Editor.Ipc.sendToMain('console:clear');
+                },
+                onPopup () {
+                    let rect = openLogBtn.getBoundingClientRect();
+                    Editor.Ipc.sendToPackage('console', 'popup-open-log-menu', rect.left, rect.bottom + 5 );
+                },
+                onFilterType (event) {
+                    Manager.setFilterType(event.target.value);
+                },
+                onCollapse (event) {
+                    Manager.setCollapse(event.target.checked);
+                },
+                onFilterRegex (event) {
+                    Manager.setFilterRegex(event.target.value);
+                },
+                onFilterText (event) {
+                    Manager.setFilterText(event.target.value);
+                }
+            },
+            components: {
+                'console-list': ConsoleList
+            }
+        });
 
-      if (firstLine > 0) {
-        detail = text.substring(firstLine + 1);
-      }
-
-      this._logsToAdd.push({
-        type: type,
-        text: text,
-        desc: desc,
-        detail: detail,
-        count: 0,
-      });
-
-      if (this._addLogTimeoutID) {
-        return;
-      }
-
-      this._addLogTimeoutID = setTimeout(() => {
-        this._addLogTimeoutID = null;
-
-        let args = ['logs', this.logs.length, 0].concat(this._logsToAdd);
-        this.splice.apply(this, args);
-
-        this._logsToAdd.length = 0;
-        this.logsCount = this.logs.length;
-
-        // to make sure after layout and before render
-        if ( !this._scrollTaskID ) {
-          this._scrollTaskID = window.requestAnimationFrame (() => {
-            this._scrollTaskID = null;
-            this.$.view.scrollTop = this.$.view.scrollHeight;
-          });
-        }
-      }, 50);
+        Editor.Ipc.sendToMain( 'editor:console-query', (err,results) => {
+            Manager.addItems(results);
+        });
     },
 
     clear () {
-      this._clear();
-      Editor.Ipc.sendToMain('console:clear');
-    },
+        Manager.clear();
+        Editor.Ipc.sendToMain('console:clear');
+    }
 
-    _clear () {
-      this.logs = [];
-      this.logsCount = this.logs.length;
-    },
-
-    _onOpenLogFile () {
-      let rect = this.$.openLogBtn.getBoundingClientRect();
-
-      Editor.Ipc.sendToPackage('console', 'popup-open-log-menu', rect.left, rect.bottom + 5 );
-    },
-
-    applyFilter ( logsCount, filterText, filterOption, useRegex, collapse ) {
-      let filterLogs = [];
-      let type = filterOption.toLowerCase();
-
-      let filter;
-      if ( useRegex ) {
-        try {
-          filter = new RegExp(filterText);
-        } catch ( err ) {
-          filter = new RegExp('');
-        }
-      } else {
-        filter = filterText.toLowerCase();
-      }
-
-      let log = null;
-
-      for ( let i = 0; i < this.logs.length; ++i ) {
-        let log_ = this.logs[i];
-
-        log = {
-          type: log_.type,
-          text: log_.text,
-          desc: log_.desc,
-          detail: log_.detail,
-          count: 0,
-        };
-
-        if ( type !== 'all' && log.type !== type ) {
-          continue;
-        }
-
-        if ( useRegex ) {
-          if ( !filter.exec(log.text) ) {
-            continue;
-          }
-        } else {
-          if ( log.text.toLowerCase().indexOf(filter) === -1 ) {
-            continue;
-          }
-        }
-
-        // check duplicate if collapse
-        if (collapse && filterLogs.length > 0) {
-          let loopCount = Math.min(filterLogs.length, 6);
-          let duplicateLog = false;
-          for (let i = filterLogs.length - 1; i > filterLogs.length - loopCount; --i) {
-            let filterLog = filterLogs[i];
-            if (log.text === filterLog.text && log.type === filterLog.type) {
-              filterLog.count += 1;
-              duplicateLog = true;
-              break;
-            }
-          }
-          if (duplicateLog === false) {
-            filterLogs.push(log);
-          }
-        } else {
-          filterLogs.push(log);
-        }
-      }
-
-      return filterLogs;
-    },
-  });
-
-})();
+});
