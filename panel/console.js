@@ -29,7 +29,7 @@ Editor.Panel.extend({
         section .item[type=success] { color: #090; }
         section .item i { padding: 0 4px; }
         section .item i.fold { color: #555; cursor: pointer; padding: 0; }
-        section .item i.fa-caret-right { padding: 0 1px 0 2px; }
+        section .item i.fa-caret-right { padding: 0 1px; }
         
         section div .warp { display: flex; }
         section div .text { position: relative; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding-right: 2px; }
