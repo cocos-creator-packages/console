@@ -37,7 +37,7 @@ module.exports = {
       Electron.shell.openItem(Editor.logfile);
     },
 
-    'console:clear' ( pattern, useRegex ) {
+    'console:clear' ( event, pattern, useRegex ) {
       Editor.clearLog( pattern, useRegex );
     },
 
