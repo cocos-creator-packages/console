@@ -72,9 +72,52 @@
         this.add( 'error', message );
       },
 
-      'editor:console-clear' () {
-        this._clear();
+      'editor:console-clear' ( event, pattern, useRegex ) {
+        if (!pattern) {
+          this._clear();
+          return;
+        }
+
+        let filter;
+        if ( useRegex ) {
+          try {
+            filter = new RegExp(pattern);
+          } catch ( err ) {
+            filter = new RegExp('');
+          }
+        } else {
+          filter = pattern;
+        }
+
+        for (let i = this.logs.length - 1; i >= 0; i--) {
+          let log = this.logs[i];
+
+          if (useRegex) {
+            if ( filter.exec(log.message) ) {
+              this.splice('logs', i, 1);
+            }
+          }
+          else {
+            if ( log.text.indexOf(filter) !== -1 ) {
+              this.splice('logs', i, 1);
+            }
+          }
+        }
+
+        this.logsCount = this.logs.length;
       },
+
+      'console:query-last-error-log' ( event ) {
+        if (!event.reply) {
+          return;
+        }
+
+        let logs = this.logs.filter((log) => {
+          return log.type === 'error' || log.type === 'failed' || log.type === 'warn';
+        });
+
+        event.reply(null, logs[0]);
+      }
     },
 
     add ( type, text ) {
