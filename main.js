@@ -37,9 +37,10 @@ module.exports = {
       Electron.shell.openItem(Editor.logfile);
     },
 
-    'console:clear' () {
-      Editor.clearLog();
+    'console:clear' ( event, pattern, useRegex ) {
+      Editor.clearLog( pattern, useRegex );
     },
+
     'popup-open-log-menu': function (event, x, y) {
       let menuTmpl = Editor.Menu.getMenu('open-log-file');
 
