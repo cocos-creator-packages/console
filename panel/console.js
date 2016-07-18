@@ -4,7 +4,6 @@ const Vue = require('vue');
 
 const ConsoleList = require(Editor.url('packages://console/panel/list'));
 const Manager = require(Editor.url('packages://console/panel/manager'));
-window.mm = Manager;
 
 Editor.Panel.extend({
 
@@ -103,8 +102,56 @@ Editor.Panel.extend({
             Manager.addItem({ type: 'error', message: message });
         },
 
-        'editor:console-clear' () {
-            Manager.clear();
+        'editor:console-clear' (event, pattern, useRegex) {
+            if (!pattern) {
+                return Manager.clear();
+            }
+
+            let filter;
+            if ( useRegex ) {
+                try {
+                    filter = new RegExp(pattern);
+                } catch ( err ) {
+                    filter = new RegExp('');
+                }
+            } else {
+                filter = pattern;
+            }
+
+            for (let i = Manager.list.length - 1; i >= 0; i--) {
+                let log = Manager.list[i];
+
+                if (useRegex) {
+                    if ( filter.exec(log.message) ) {
+                        Manager.list.splice(i, 1);
+                    }
+                }
+                else {
+                    if ( log.text.indexOf(filter) !== -1 ) {
+                        Manager.list(i, 1);
+                    }
+                }
+            }
+
+            Manager.update();
+
+        },
+
+        'console:query-last-error-log' (event) {
+            if (!event.reply) {
+                return;
+            }
+
+            var list = Manager.list;
+            var index = list.length - 1;
+            while (index >= 0) {
+                let item = list[index--];
+                if (item.type === 'error' || item.type === 'failed' || item.type === 'warn') {
+                    return  event.reply(null, item);
+                }
+            }
+
+            event.reply(null, undefined);
         }
     },
 
