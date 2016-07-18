@@ -1,7 +1,5 @@
 'use strict';
 
-const Vue = require('vue');
-
 const ConsoleList = require(Editor.url('packages://console/panel/list'));
 const Manager = require(Editor.url('packages://console/panel/manager'));
 
