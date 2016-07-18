@@ -75,7 +75,11 @@ exports.update = function () {
         // 根据填入的过滤条件再次过滤一遍
         var filter = filterText;
         if (filterRegex) {
-            filter = new RegExp(filter);
+            try {
+                filter = new RegExp(filter);
+            } catch (error) {
+                filter = /.*/;
+            }
         }
         sources = sources.filter((item) => {
             if (filterRegex) {
