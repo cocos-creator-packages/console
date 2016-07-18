@@ -122,13 +122,13 @@ Editor.Panel.extend({
                 let log = Manager.list[i];
 
                 if (useRegex) {
-                    if ( filter.exec(log.message) ) {
+                    if ( filter.exec(log.title) ) {
                         Manager.list.splice(i, 1);
                     }
                 }
                 else {
-                    if ( log.text.indexOf(filter) !== -1 ) {
-                        Manager.list(i, 1);
+                    if ( log.title.indexOf(filter) !== -1 ) {
+                        Manager.list.splice(i, 1);
                     }
                 }
             }
