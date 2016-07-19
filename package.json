@@ -1,6 +1,6 @@
 {
   "name": "console",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A simple console editor",
   "author": "Firebox Technology",
   "main": "main.js",
@@ -12,8 +12,7 @@
     }
   },
   "panel": {
-    "main": "panel/console.html",
-    "ui": "polymer",
+    "main": "panel/console.js",
     "popable": false,
     "type": "dockable",
     "title": "i18n:MAIN_MENU.panel.console",

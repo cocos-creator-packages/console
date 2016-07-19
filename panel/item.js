@@ -1,88 +1,62 @@
-(() => {
-  'use strict';
+'use strict';
 
-  Editor.polymerElement({
-    properties: {
-      type: {
-        type: String,
-        value: 'log',
-        reflectToAttribute: true,
-      },
+exports.template = `
+<div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture">
+    <div class="warp">
+        <div class="text">
+            <span>
+                <i class="fa fa-times-circle" v-if="type==='error'"></i>
+                <i class="fa fa-warning" v-if="type==='warn'"></i>
+            </span>
+            
+            <span>
+                <i class="fold fa fa-caret-down" v-if="info&&!fold" v-on:click="onHide"></i>
+                <i class="fold fa fa-caret-right" v-if="info&&fold" v-on:click="onShow"></i>
+                {{title}}
+            </span>
+            
+        </div>
+        <span v-if="num>1">{{num}}</span>
+    </div>
+    <div class="info" v-if="!fold">
+        <template v-for="str in foldInfo">
+            <div>{{str}}</div>
+        </template>
+    </div>
+</div>
+`;
 
-      count: {
-        type: Number,
-        value: 0,
-      },
+exports.props = ['type', 'title', 'info', 'y', 'texture', 'rows', 'fold', 'num'];
 
-      desc: {
-        type: String,
-        value: '',
-      },
+exports.data = function () {
+    return {
+        foldInfo: [],
+        style: {
+            transform: 'translateY(0)'
+        }
+    };
+};
 
-      detail: {
-        type: String,
-        value: '',
-      },
-
-      showCount: {
-        type: Boolean,
-        value: false,
-      },
-
-      folded: {
-        type: Boolean,
-        value: false,
-        reflectToAttribute: true,
-      },
+exports.directives = {
+    init (y) {
+        this.vm.style.transform = `translateY(${y}px)`;
     },
+    info (info) {
+        var results = this.vm.foldInfo;
+        while (results.length > 0) {
+            results.pop();
+        }
+        info.split('\n').forEach((item) => {
+            results.push(item.trim());
+        });
+    }
+};
 
-    ready () {
+exports.methods = {
+    onHide () {
+        this.$parent.onUpdateFold(this.y, true);
     },
-
-    _typeClass ( type ) {
-      return 'item layout vertical ' + type;
-    },
-
-    _iconClass (type) {
-      switch (type) {
-        case 'error':
-          return 'fa fa-times-circle icon';
-
-        case 'warn':
-          return 'fa fa-warning icon';
-
-        default:
-          return '';
-      }
-    },
-
-    _textClass (detail) {
-      if (detail) {
-        return 'more';
-      }
-    },
-
-    _showCount ( showCount, count ) {
-      if ( showCount && count > 0 ) {
-        return true;
-      }
-
-      return false;
-    },
-
-    _computedCount ( count ) {
-      return count + 1;
-    },
-
-    _onFoldClick () {
-      this.set( 'folded', !this.folded );
-    },
-
-    _foldClass ( detail, folded ) {
-      if (!detail) {
-        return;
-      }
-      return folded ? 'fa fold fa-caret-down' : 'fa fold fa-caret-right';
-    },
-  });
-})();
+    onShow () {
+        this.$parent.onUpdateFold(this.y, false);
+    }
+};
