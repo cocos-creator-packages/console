@@ -155,10 +155,10 @@ Editor.Panel.extend({
 
     ready () {
         var openLogBtn = this.$openLogBtn;
-        new Vue({
+        this._vm = new Vue({
             el: this.$console,
             data: {
-                messages: Manager.renderCmds
+                messages: []
             },
             methods: {
                 onClear () {
@@ -186,6 +186,10 @@ Editor.Panel.extend({
                 'console-list': ConsoleList
             }
         });
+
+        // 将显示的数组设置进Manager
+        // manager可以直接修改这个数组，更新数据
+        Manager.setRenderCmds(this._vm.messages);
 
         Editor.Ipc.sendToMain( 'editor:console-query', (err,results) => {
             Manager.addItems(results);

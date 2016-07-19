@@ -7,7 +7,11 @@ var list = exports.list = [];
 // 这个数据直接用于 vue 的数据绑定
 // 所以应该避免使用 array[i] = xxx 这样的用法
 // 只能够使用 pop() splice() push() 等方法，否则会破坏数据绑定
-var renderCmds = exports.renderCmds = [];
+var renderCmds = exports.renderCmds = null;
+
+exports.setRenderCmds = function (array) {
+    renderCmds = exports.renderCmds = array;
+};
 
 var collapse = true;
 var filterType = '';
@@ -58,7 +62,7 @@ var updateLocker = false;
  * 更新显示数据
  */
 exports.update = function () {
-    if (updateLocker) return;
+    if (updateLocker || !renderCmds) return;
     updateLocker = true;
     requestAnimationFrame(() => {
         updateLocker = false;
