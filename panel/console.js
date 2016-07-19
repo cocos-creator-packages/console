@@ -7,31 +7,98 @@ Editor.Panel.extend({
 
     style: `
         @import url('app://bower_components/fontawesome/css/font-awesome.min.css');
-        #console { display: flex; flex-direction: column; }
-        header { display: flex; padding: 4px; position: relative; }
-        section { flex: 1; border: 1px solid black; box-shadow: inset 0 0 8px 2px rgba(0,0,0,0.2); background: #333; }
+        #console {
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            display: flex;
+            padding: 4px;
+            position: relative;
+        }
+        section {
+            flex: 1;
+            border: 1px solid black;
+            box-shadow: inset 0 0 8px 2px rgba(0,0,0,0.2);
+            background: #333;
+        }
         
-        ui-checkbox { padding: 3px 4px; }
-        .collapse { position: absolute; right: 0; }
+        ui-checkbox {
+            padding: 3px 4px;
+        }
+        .collapse {
+            position: absolute;
+            right: 0;
+        }
         
-        section { overflow-y: scroll; position: relative; }
-        section .item { color: #999; line-height: 30px; padding: 0 10px; box-sizing: border-box; position: absolute; top: 0; width: 100%; }
-        section .item[texture=light] { background-color:#292929; }
-        section .item[texture=dark] { background-color:#222; }
-        section .item[type=log] { color: #999; }
-        section .item[type=error] { color: #c80c0c; }
-        section .item[type=warn] { color: #990; }
-        section .item[type=info] { color: #090; }
-        section .item[type=failed] { color: #c80c0c; }
-        section .item[type=success] { color: #090; }
-        section .item i { padding: 0 4px; }
-        section .item i.fold { color: #555; cursor: pointer; padding: 0; }
-        section .item i.fa-caret-right { padding: 0 1px; }
+        section {
+            overflow-y: scroll;
+            position: relative;
+        }
+        section .item {
+            color: #999;
+            line-height: 30px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+        section .item[texture=light] {
+            background-color:#292929;
+        }
+        section .item[texture=dark] {
+            background-color:#222;
+        }
+        section .item[type=log] {
+            color: #999;
+        }
+        section .item[type=error] {
+            color: #c80c0c;
+        }
+        section .item[type=warn] {
+            color: #990;
+        }
+        section .item[type=info] {
+            color: #090;
+        }
+        section .item[type=failed] {
+            color: #c80c0c;
+        }
+        section .item[type=success] {
+            color: #090;
+        }
+        section .item i {
+            padding: 0 4px;
+        }
+        section .item i.fold {
+            color: #555;
+            cursor: pointer;
+            padding: 0;
+        }
+        section .item i.fa-caret-right {
+            padding: 0 1px;
+        }
         
-        section div .warp { display: flex; }
-        section div .text { position: relative; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding-right: 2px; }
-        section div .info { margin-left: 35px; }
-        section div .info div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        section div .warp {
+            display: flex;
+        }
+        section div .text {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            padding-right: 2px;
+        }
+        section div .info {
+            margin-left: 35px;
+        }
+        section div .info div {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     `,
 
     template: `
