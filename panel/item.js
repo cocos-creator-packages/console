@@ -1,7 +1,7 @@
 'use strict';
 
 exports.template = `
-<div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture">
+<div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture" v-bind:fold="fold">
     <div class="warp">
         <div class="text">
             <span>
@@ -18,7 +18,7 @@ exports.template = `
         </div>
         <span v-if="num>1">{{num}}</span>
     </div>
-    <div class="info" v-if="!fold">
+    <div class="info">
         <template v-for="item in foldInfo" track-by="$index">
             <div>
                 <span>{{item.info}}</span>

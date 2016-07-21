@@ -45,6 +45,10 @@ Editor.Panel.extend({
             font-size: 14px;
             width: 100%;
             -webkit-user-select: initial;
+            overflow-x: scroll;
+        }
+        section .item[fold] {
+            overflow-x: hidden;
         }
         section .item[texture=light] {
             background-color:#292929;
@@ -88,20 +92,29 @@ Editor.Panel.extend({
         section div .text {
             position: relative;
             flex: 1;
-            overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
             padding-right: 2px;
         }
+        section div[fold] .text {
+            overflow: hidden;
+        }
         section div .info {
             margin-left: 45px;
         }
+        section div[fold] .info > div {
+            display: none;
+        }
         section div .info div {
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
             line-height: 26px;
             font-size: 13px;
+        }
+        section div[fold] .info div {
+            overflow: hidden;
+        }
+        section .item[type=error] .info div {
             color: #A73637;
         }
     `,

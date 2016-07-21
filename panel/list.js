@@ -33,7 +33,7 @@ var getHeight = function (list) {
         if (item.fold) {
             height += 30;
         } else {
-            height += item.rows * 26 + 4;
+            height += item.rows * 26 + 14;
         }
     });
     return height;
@@ -77,7 +77,7 @@ exports.methods = {
             if (item.fold) {
                 tmp += 30;
             } else {
-                tmp += item.rows * 26 + 4;
+                tmp += item.rows * 26 + 14;
             }
             if (tmp > scroll) {
                 index = i - 1;
@@ -112,7 +112,7 @@ exports.methods = {
 
         var source = this.messages[index++];
         source.fold = fold;
-        var offsetY = source.rows * 26 + 4 - 30;
+        var offsetY = source.rows * 26 + 14 - 30;
         if (fold) {
             offsetY = -offsetY;
         }
@@ -159,7 +159,7 @@ exports.directives = {
                 if (item.fold) {
                     tmp += 30;
                 } else {
-                    tmp += item.rows * 26 + 4;
+                    tmp += item.rows * 26 + 14;
                 }
                 if (tmp > scroll) {
                     index = i - 1;
