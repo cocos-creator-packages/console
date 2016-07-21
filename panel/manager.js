@@ -36,6 +36,12 @@ exports.addItem = function (item) {
     var result = {};
     result.type = item.type;
     var split = item.message.split('\n');
+    split = split.map((item) => {
+        return item.trim();
+    });
+    split = split.filter((item) => {
+        return item !== "";
+    });
     result.rows = split.length; // 默认高度
     result.title = split[0];
     result.info = split.splice(1).join('\n');
@@ -107,7 +113,7 @@ exports.update = function () {
             if (item.fold) {
                 offsetY += 30;
             } else {
-                offsetY += item.rows * 30;
+                offsetY += item.rows * 26 + 4;
             }
         });
     });
