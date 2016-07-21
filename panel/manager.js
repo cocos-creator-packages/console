@@ -113,7 +113,7 @@ exports.update = function () {
             if (item.fold) {
                 offsetY += 30;
             } else {
-                offsetY += item.rows * 26 + 4;
+                offsetY += item.rows * 26 + 14;
             }
         });
     });
