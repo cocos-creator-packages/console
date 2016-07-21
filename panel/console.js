@@ -75,15 +75,15 @@ Editor.Panel.extend({
             color: #090;
         }
         section .item i {
-            padding: 0 4px;
         }
         section .item i.fold {
             color: #555;
             cursor: pointer;
-            padding: 0;
+            padding: 2px;
         }
         section .item i.fa-caret-right {
-            padding: 0 1px;
+            padding: 2px 5px 2px 6px;
+            margin: 0 -2px;
         }
         
         section div .warp {
