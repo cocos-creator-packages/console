@@ -19,8 +19,11 @@ exports.template = `
         <span v-if="num>1">{{num}}</span>
     </div>
     <div class="info" v-if="!fold">
-        <template v-for="str in foldInfo">
-            <div>{{str}}</div>
+        <template v-for="item in foldInfo" track-by="$index">
+            <div>
+                <span>{{item.info}}</span>
+                <span class="path">{{item.path}}</span>
+            </div>
         </template>
     </div>
 </div>
@@ -42,12 +45,18 @@ exports.directives = {
         this.vm.style.transform = `translateY(${y}px)`;
     },
     info (info) {
+        var sources = info.split('\n');
         var results = this.vm.foldInfo;
         while (results.length > 0) {
             results.pop();
         }
-        info.split('\n').forEach((item) => {
-            results.push(item.trim());
+        sources.forEach((item) => {
+            var match = item.match(/(at [^ ]+) (.*)/);
+            match = match || ["", item];
+            results.push({
+                info: match[1] || '',
+                path: match[2] || ''
+            });
         });
     }
 };

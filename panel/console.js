@@ -42,7 +42,9 @@ Editor.Panel.extend({
             box-sizing: border-box;
             position: absolute;
             top: 0;
+            font-size: 14px;
             width: 100%;
+            -webkit-user-select: initial;
         }
         section .item[texture=light] {
             background-color:#292929;
@@ -54,7 +56,7 @@ Editor.Panel.extend({
             color: #999;
         }
         section .item[type=error] {
-            color: #c80c0c;
+            color: #DA2121;
         }
         section .item[type=warn] {
             color: #990;
@@ -63,7 +65,7 @@ Editor.Panel.extend({
             color: #090;
         }
         section .item[type=failed] {
-            color: #c80c0c;
+            color: #DA2121;
         }
         section .item[type=success] {
             color: #090;
@@ -92,12 +94,15 @@ Editor.Panel.extend({
             padding-right: 2px;
         }
         section div .info {
-            margin-left: 35px;
+            margin-left: 45px;
         }
         section div .info div {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 26px;
+            font-size: 13px;
+            color: #A73637;
         }
     `,
 
