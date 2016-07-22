@@ -32,7 +32,7 @@ Editor.Panel.extend({
         }
         
         section {
-            overflow-y: scroll;
+            overflow-y: auto;
             position: relative;
         }
         section .item {
