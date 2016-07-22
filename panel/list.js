@@ -127,6 +127,9 @@ exports.methods = {
     }
 };
 
+var scrollTimer = null;
+var scrollNumCache = null;
+
 exports.directives = {
     init (list) {
         // 计算总高度
@@ -142,15 +145,22 @@ exports.directives = {
             dataList.pop();
         }
 
-        // 用户如果更改了滚动的 scrollTop，则不自动跳到底部
-        // 如果滚动条不在页面最顶部以及最底部，则添加 log 的时候不去滚动
-        var ts = this.vm.$el.scrollTop;
-        var tc = this.vm.$el.clientHeight;
-        if (ts !== 0 && height - tc -ts > 30) {
-            return this.vm.onScroll({ target: this.vm.$el });
-        }
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
 
-        requestAnimationFrame(() => {
+            var height = getHeight(list);
+
+            // 用户如果更改了滚动的 scrollTop，则不自动跳到底部
+            // 如果滚动条不在页面最顶部以及最底部，则添加 log 的时候不去滚动
+            var ts = this.vm.$el.scrollTop;
+            var tc = this.vm.$el.clientHeight;
+            var cn = list.length - scrollNumCache;
+            scrollNumCache = list.length;
+            if (ts !== 0 && height - tc -ts > 30 * cn) {
+                return this.vm.onScroll({ target: this.vm.$el });
+            }
+
+
             var scroll = this.vm.$el.scrollTop = height - tc;
 
             var tmp = 0;
@@ -175,7 +185,7 @@ exports.directives = {
             }
 
             this.vm.onScroll({ target: this.vm.$el });
-        });
+        }, 10);
 
 
     }
