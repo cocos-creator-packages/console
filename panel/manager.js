@@ -77,8 +77,13 @@ exports.update = function () {
             renderCmds.pop();
         }
 
-        // 根据 type 过滤一遍 log
+        // 过滤一遍 title 不存在的项目
         var sources = list.filter((item) => {
+            return !!item.title;
+        });
+
+        // 根据 type 过滤一遍 log
+        sources = list.filter((item) => {
             return !filterType || item.type === filterType;
         });
 
