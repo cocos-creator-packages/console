@@ -77,17 +77,6 @@ exports.update = function () {
             renderCmds.pop();
         }
 
-        // 过滤一遍 title 不存在的项目
-        var sources = list.filter((item) => {
-            return !!item.title;
-        });
-
-        // 根据 type 过滤一遍 log
-        sources = list.filter((item) => {
-            return !filterType || item.type === filterType;
-        });
-
-        // 根据填入的过滤条件再次过滤一遍
         var filter = filterText;
         if (filterRegex) {
             try {
@@ -96,13 +85,26 @@ exports.update = function () {
                 filter = /.*/;
             }
         }
-        sources = sources.filter((item) => {
+
+        var sources = list.filter((item) => {
+            // 过滤一遍 title 不存在的项目
+            if (!item.title) {
+                return false;
+            }
+
+            // 根据 type 过滤一遍 log
+            if (filterType && item.type !== filterType) {
+                return false;
+            }
+
+            // 根据填入的过滤条件再次过滤一遍
             if (filterRegex) {
                 return filter.test(item.title);
             } else {
                 return item.title.indexOf(filter) !== -1;
             }
         });
+
 
         // 最后将过滤出来的 log 信息放入需要显示的 renderCmds 队列
         sources.forEach((item) => {
