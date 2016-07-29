@@ -9,7 +9,7 @@ exports.template = `
                 <i class="fa fa-warning" v-if="type==='warn'"></i>
             </span>
             
-            <span>
+            <span title="{{title}}">
                 <i class="fold fa fa-caret-down" v-if="info&&!fold" v-on:click="onHide"></i>
                 <i class="fold fa fa-caret-right" v-if="info&&fold" v-on:click="onShow"></i>
                 {{title}}
