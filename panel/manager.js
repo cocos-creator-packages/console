@@ -82,14 +82,14 @@ exports.update = function () {
         var condition = filterCase ? '' : 'i';
 
         var filter;
-        if (filterRegex) {
-            try {
+        try {
+            if (filterRegex) {
                 filter = new RegExp(filterText, condition);
-            } catch (error) {
-                filter = /.*/;
+            } else {
+                filter = new RegExp(filterText, condition);
             }
-        } else {
-            filter = new RegExp(filterText, condition);
+        } catch (error) {
+            filter = /.*/;
         }
 
         var sources = list.filter((item) => {
