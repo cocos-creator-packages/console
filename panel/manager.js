@@ -17,6 +17,7 @@ var collapse = true;
 var filterType = '';
 var filterText = '';
 var filterRegex = false;
+var filterCase = false;
 
 /**
  * 添加一组数据
@@ -77,13 +78,18 @@ exports.update = function () {
             renderCmds.pop();
         }
 
-        var filter = filterText;
-        if (filterRegex) {
-            try {
-                filter = new RegExp(filter);
-            } catch (error) {
-                filter = /.*/;
+        // 判断是否忽略大小写
+        var condition = filterCase ? '' : 'i';
+
+        var filter;
+        try {
+            if (filterRegex) {
+                filter = new RegExp(filterText, condition);
+            } else {
+                filter = new RegExp(filterText, condition);
             }
+        } catch (error) {
+            filter = /.*/;
         }
 
         var sources = list.filter((item) => {
@@ -98,11 +104,7 @@ exports.update = function () {
             }
 
             // 根据填入的过滤条件再次过滤一遍
-            if (filterRegex) {
-                return filter.test(item.title);
-            } else {
-                return item.title.indexOf(filter) !== -1;
-            }
+            return filter.test(item.title);
         });
 
 
@@ -143,5 +145,10 @@ exports.setFilterText = function (str) {
 
 exports.setFilterRegex = function (bool) {
     filterRegex = !!bool;
+    exports.update();
+};
+
+exports.setFilterCase = function (bool) {
+    filterCase = !!bool;
     exports.update();
 };
