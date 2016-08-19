@@ -16,6 +16,10 @@ Editor.Panel.extend({
             padding: 4px;
             position: relative;
         }
+        header .flex-1 {
+            display: flex;
+            overflow: hidden;
+        }
         section {
             flex: 1;
             border: 1px solid black;
@@ -27,8 +31,7 @@ Editor.Panel.extend({
             padding: 3px 4px;
         }
         .collapse {
-            position: absolute;
-            right: 0;
+            width: 70px;
         }
         
         section {
@@ -123,24 +126,29 @@ Editor.Panel.extend({
     <div id="console" class="fit">
         
         <header>
-            <ui-button class="red small transparent" v-on:confirm="onClear">
-                <i class="icon-block"></i>
-            </ui-button>
-            <ui-button id="openLogBtn" class="small transparent" v-on:click="onPopup">
-                <i class="icon-doc-text"></i>
-            </ui-button>
-            <ui-input v-on:change="onFilterText"></ui-input>
-            <ui-checkbox v-on:confirm="onFilterRegex">Regex</ui-checkbox>
-            <ui-select v-on:confirm="onFilterType">
-                <option value="">All</option>
-                <option value="log">Log</option>
-                <option value="success">Success</option>
-                <option value="failed">Failed</option>
-                <option value="info">Info</option>
-                <option value="warn">Warn</option>
-                <option value="error">Error</option>
-            </ui-select>
-            <ui-checkbox class="collapse" v-on:confirm="onCollapse" checked>Collapse</ui-checkbox>
+            <div class="flex-1">
+                <ui-button class="red small transparent" v-on:confirm="onClear">
+                    <i class="icon-block"></i>
+                </ui-button>
+                <ui-button id="openLogBtn" class="small transparent" v-on:click="onPopup">
+                    <i class="icon-doc-text"></i>
+                </ui-button>
+                <ui-input v-on:change="onFilterText"></ui-input>
+                <ui-checkbox v-on:confirm="onFilterCase">Match Case</ui-checkbox>
+                <ui-checkbox v-on:confirm="onFilterRegex">Regex</ui-checkbox>
+                <ui-select v-on:confirm="onFilterType">
+                    <option value="">All</option>
+                    <option value="log">Log</option>
+                    <option value="success">Success</option>
+                    <option value="failed">Failed</option>
+                    <option value="info">Info</option>
+                    <option value="warn">Warn</option>
+                    <option value="error">Error</option>
+                </ui-select>
+            </div>
+            <div class="collapse">
+                <ui-checkbox v-on:confirm="onCollapse" checked>Collapse</ui-checkbox>
+            </div>
         </header>
         <console-list v-bind:messages="messages"></console-list>
     </div>
@@ -262,6 +270,9 @@ Editor.Panel.extend({
                 },
                 onFilterRegex (event) {
                     Manager.setFilterRegex(event.target.value);
+                },
+                onFilterCase (event) {
+                    Manager.setFilterCase(event.target.value);
                 },
                 onFilterText (event) {
                     Manager.setFilterText(event.target.value);
