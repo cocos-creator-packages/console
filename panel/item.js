@@ -1,7 +1,9 @@
 'use strict';
 
 exports.template = `
-<div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture" v-bind:fold="fold">
+<div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture" v-bind:fold="fold"
+    v-on:mousedown="onMouseDown"
+>
     <div class="warp">
         <div class="text">
             <span>
@@ -61,11 +63,27 @@ exports.directives = {
     }
 };
 
+var Selection = document.getSelection();
+
 exports.methods = {
     onHide () {
         this.$parent.onUpdateFold(this.y, true);
     },
     onShow () {
         this.$parent.onUpdateFold(this.y, false);
+    },
+    onMouseDown (event) {
+        if (event.button !== 2) return;
+
+        // 获取选中的文本
+        var text = Selection.toString();
+        if (!text) {
+            text += this.title;
+            if (this.info) {
+                text += '\r\n' + this.info;
+            }
+        }
+
+        Editor.Ipc.sendToPackage('console', 'popup-item-menu', event.clientX, event.clientY + 5, text );
     }
 };

@@ -1,6 +1,7 @@
 'use strict';
 
 const Electron = require('electron');
+const Clipboard = Electron.clipboard;
 
 module.exports = {
   load () {
@@ -49,6 +50,23 @@ module.exports = {
       y = Math.floor(y);
       editorMenu.nativeMenu.popup(Electron.BrowserWindow.fromWebContents(event.sender), x, y);
       editorMenu.dispose();
-    }
+    },
+
+    'popup-item-menu' (event, x, y, text) {
+      var menuTmpl = [
+        {
+          label: '复制到剪贴板',
+          params: [],
+          click () {
+            Clipboard.writeText(text || '');
+          }
+        }
+      ];
+      let editorMenu = new Editor.Menu(menuTmpl, event.sender);
+      x = Math.floor(x);
+      y = Math.floor(y);
+      editorMenu.nativeMenu.popup(Electron.BrowserWindow.fromWebContents(event.sender), x, y);
+      editorMenu.dispose();
+    },
   }
 };
