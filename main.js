@@ -55,7 +55,7 @@ module.exports = {
     'popup-item-menu' (event, x, y, text) {
       var menuTmpl = [
         {
-          label: '复制到剪贴板',
+          label: Editor.T('CONSOLE.copy_to_clipboard'),
           params: [],
           click () {
             Clipboard.writeText(text || '');
