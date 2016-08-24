@@ -117,6 +117,9 @@ Editor.Panel.extend({
         section .item[type=error] .info div {
             color: #A73637;
         }
+        section .item:hover {
+            background: #353535;
+        }
     `,
 
     template: `
@@ -247,8 +250,7 @@ Editor.Panel.extend({
             },
             methods: {
                 onClear () {
-                    Manager.clear();
-                    Editor.Ipc.sendToMain('console:clear');
+                    Editor.Ipc.sendToMain('console:clear', '^(?!.*?SyntaxError)', true);
                 },
                 onPopup () {
                     let rect = openLogBtn.getBoundingClientRect();
