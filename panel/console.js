@@ -250,7 +250,7 @@ Editor.Panel.extend({
             },
             methods: {
                 onClear () {
-                    Editor.Ipc.sendToMain('console:clear', '^(?!.*?SyntaxError)', true);
+                    Editor.Ipc.sendToMain('console:clear', '^(?!.*?Compile error)', true);
                 },
                 onPopup () {
                     let rect = openLogBtn.getBoundingClientRect();
