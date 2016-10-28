@@ -213,7 +213,8 @@ Editor.Panel.extend({
                     }
                 }
                 else {
-                    if ( log.title.indexOf(filter) !== -1 ) {
+                    var line = filter.split('\n')[0];
+                    if ( log.title.indexOf(line) !== -1 ) {
                         Manager.list.splice(i, 1);
                     }
                 }
