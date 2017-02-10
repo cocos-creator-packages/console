@@ -10,6 +10,7 @@ Editor.Panel.extend({
         #console {
             display: flex;
             flex-direction: column;
+            font-family: Menlo, monospace;
         }
         header {
             display: flex;
@@ -100,7 +101,7 @@ Editor.Panel.extend({
             overflow: hidden;
         }
         section div .info {
-            margin-left: 45px;
+            margin-left: 25px;
         }
         section div[fold] .info > div {
             display: none;
@@ -110,6 +111,10 @@ Editor.Panel.extend({
             text-overflow: ellipsis;
             line-height: 26px;
             font-size: 13px;
+        }
+        section div .info div pre {
+            margin: 0;
+            display: inline;
         }
         section div[fold] .info div {
             overflow: hidden;

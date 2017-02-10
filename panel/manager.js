@@ -36,9 +36,9 @@ exports.addItem = function (item) {
     var result = {};
     result.type = item.type;
     var split = item.message.split('\n');
-    split = split.map((item) => {
-        return item.trim();
-    });
+    // split = split.map((item) => {
+    //     return item.trim();
+    // });
     split = split.filter((item) => {
         return item !== "";
     });
