@@ -23,7 +23,7 @@ exports.template = `
     <div class="info">
         <template v-for="item in foldInfo" track-by="$index">
             <div>
-                <span>{{item.info}}</span>
+                <pre>{{item.info}}</pre>
                 <span class="path">{{item.path}}</span>
             </div>
         </template>
