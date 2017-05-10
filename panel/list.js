@@ -156,12 +156,13 @@ exports.directives = {
             var tc = this.vm.$el.clientHeight;
             var cn = list.length - scrollNumCache;
             scrollNumCache = list.length;
+
+            var scroll;
             if (ts !== 0 && height - tc -ts > 30 * cn) {
-                return this.vm.onScroll({ target: this.vm.$el });
+                scroll = this.vm.$el.scrollTop;
+            } else {
+                scroll = this.vm.$el.scrollTop = height - tc
             }
-
-
-            var scroll = this.vm.$el.scrollTop = height - tc;
 
             var tmp = 0;
             var index = 0;
