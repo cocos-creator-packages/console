@@ -61,7 +61,7 @@ var createItem = function () {
         texture: 'dark',
         fold: true,
         num: 1,
-        translateY: -1000
+        translateY: -10000
     };
 };
 
@@ -88,7 +88,7 @@ exports.methods = {
         dataList.forEach(function (item, i) {
             var source = list[index + i];
             if (!source) {
-                item.translateY = -1000;
+                item.translateY = -10000;
                 return;
             }
             item.type = source.type;
@@ -181,7 +181,7 @@ exports.directives = {
                 if (!dataList[i])
                     dataList.push(createItem());
                 else
-                    dataList[i].translateY = -1000;
+                    dataList[i].translateY = -10000;
             }
 
             this.vm.onScroll({ target: this.vm.$el });
