@@ -19,6 +19,7 @@ exports.template = `
              v-bind:rows="item.rows"
              v-bind:fold="item.fold"
              v-bind:num="item.num"
+             v-show="item.show"
          ></console-item>
         </template>
     </div>
@@ -61,7 +62,8 @@ var createItem = function () {
         texture: 'dark',
         fold: true,
         num: 1,
-        translateY: -10000
+        translateY: -1000,
+        show: false,
     };
 };
 
@@ -88,7 +90,8 @@ exports.methods = {
         dataList.forEach(function (item, i) {
             var source = list[index + i];
             if (!source) {
-                item.translateY = -10000;
+                item.translateY = -1000;
+                item.show = false;
                 return;
             }
             item.type = source.type;
@@ -99,6 +102,7 @@ exports.methods = {
             item.num = source.num;
             item.texture = ((index + i)%2 === 0) ? 'dark' : 'light';
             item.translateY = source.translateY;
+            item.show = true;
         });
     },
     onUpdateFold (y, fold) {
@@ -117,7 +121,9 @@ exports.methods = {
             offsetY = -offsetY;
         }
         for (index; index<this.messages.length; index++) {
-            this.messages[index]['translateY'] += offsetY;
+            let item = this.messages[index];
+            item['translateY'] += offsetY;
+            item.show = true;
         }
 
         // 计算总高度
@@ -179,10 +185,14 @@ exports.directives = {
             });
 
             for (var i=0; i<num; i++) {
-                if (!dataList[i])
+                if (!dataList[i]) {
                     dataList.push(createItem());
-                else
-                    dataList[i].translateY = -10000;
+                } else {
+                    let item = dataList[i];
+                    item.translateY = -1000;
+                    item.show = false;
+                }
+
             }
 
             this.vm.onScroll({ target: this.vm.$el });
