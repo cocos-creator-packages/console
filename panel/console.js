@@ -67,7 +67,7 @@ Editor.Panel.extend({
             color: #990;
         }
         section .item[type=info] {
-            color: #090;
+            color: #09F;
         }
         section .item[type=failed] {
             color: #DA2121;
