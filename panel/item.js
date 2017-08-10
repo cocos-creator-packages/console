@@ -53,11 +53,11 @@ exports.directives = {
             results.pop();
         }
         sources.forEach((item) => {
-            var match = item.match(/(at [^ ]+) (.*)/);
-            match = match || ["", item];
+            var match = item.match(/(^ *at (\S+ )*)(\(*[^\:]+\:\d+\:\d+\)*)/);
+            match = match || ['', item, undefined, ''];
             results.push({
                 info: match[1] || '',
-                path: match[2] || ''
+                path: match[3] || ''
             });
         });
     }
