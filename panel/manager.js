@@ -9,8 +9,12 @@ var list = exports.list = [];
 // 只能够使用 pop() splice() push() 等方法，否则会破坏数据绑定
 var renderCmds = exports.renderCmds = null;
 
-exports.setRenderCmds = function (array) {
+// 行高
+var itemHeight = exports.itemHeight = null;
+
+exports.setRenderCmds = function (array, height) {
     renderCmds = exports.renderCmds = array;
+    itemHeight = exports.itemHeight = height;
 };
 
 var collapse = true;
@@ -117,8 +121,10 @@ exports.update = function () {
             item.num = 1;
             item.translateY = offsetY;
             renderCmds.push(item);
+            // 行高使用外部选择的lineheight
+            var itemHeight = exports.itemHeight;
             if (item.fold) {
-                offsetY += 30;
+                offsetY += itemHeight;
             } else {
                 offsetY += item.rows * 26 + 14;
             }

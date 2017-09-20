@@ -2,9 +2,9 @@
 
 exports.template = `
 <div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture" v-bind:fold="fold"
-    v-on:mousedown="onMouseDown"
+    v-on:mousedown="onMouseDown" 
 >
-    <div class="warp">
+    <div class="warp" :style="{fontSize: fontsize + 'px', lineHeight: lineheight + 'px', height: lineheight + 'px'}">
         <div class="text">
             <span>
                 <i class="fa fa-times-circle" v-if="type==='error'"></i>
@@ -31,7 +31,7 @@ exports.template = `
 </div>
 `;
 
-exports.props = ['type', 'title', 'info', 'y', 'texture', 'rows', 'fold', 'num'];
+exports.props = ['type', 'title', 'info', 'y', 'texture', 'rows', 'fold', 'num', 'lineheight', 'fontsize'];
 
 exports.data = function () {
     return {

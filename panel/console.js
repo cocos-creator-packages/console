@@ -150,7 +150,17 @@ Editor.Panel.extend({
             </ui-select>
             <ui-checkbox class="collapse" v-on:confirm="onCollapse" checked>Collapse</ui-checkbox>
         </header>
-        <console-list v-bind:messages="messages"></console-list>
+        <header>
+            <i class="fa fa-text-width" title="Font Size" style="padding: 0.4em 0.6em"></i>
+            <ui-select :value="fontsize" @change="onChangeFontSize">
+                <option v-for="fontsize in getSizeArr(8,20)" :value="fontsize">{{ fontsize }}</option>
+            </ui-select>
+            <i class="fa fa-text-height" title="Font LineHeight" style="padding: 0.4em 0.6em;margin-left:0.1em;"></i>
+            <ui-select :value="lineheight" @change="onChangeLineHeight">
+                <option v-for="lineheight in getSizeArr(18,36)" :value="lineheight">{{ lineheight }}</option>
+            </ui-select>
+        </header>
+        <console-list v-bind:messages="messages" :fontsize="fontsize" :lineheight="lineheight"></console-list>
     </div>
     `,
 
@@ -251,7 +261,9 @@ Editor.Panel.extend({
         this._vm = new Vue({
             el: this.$console,
             data: {
-                messages: []
+                messages: [],
+                fontsize: 14,
+                lineheight: 27  // 每一行的高度
             },
             methods: {
                 onClear () {
@@ -272,6 +284,21 @@ Editor.Panel.extend({
                 },
                 onFilterText (event) {
                     Manager.setFilterText(event.target.value);
+                },
+                // 改变font-size
+                onChangeFontSize (event) {
+                    this.$data.fontsize = parseInt( event.target.value );
+                },
+                // 改变line-height
+                onChangeLineHeight(event) {
+                    Manager.itemHeight = this.$data.lineheight = parseInt( event.target.value );
+                    Manager.update();
+                },
+                // 获得select范围
+                getSizeArr (start, end) {
+                    let arr = [];
+                    while ( start < end ) arr.push( ++start );
+                    return arr;
                 }
             },
             components: {
@@ -281,7 +308,8 @@ Editor.Panel.extend({
 
         // 将显示的数组设置进Manager
         // manager可以直接修改这个数组，更新数据
-        Manager.setRenderCmds(this._vm.messages);
+        // 将每一行的行高设置进Manager，然后通过Manager进行操作设置相应的translateY.
+        Manager.setRenderCmds(this._vm.messages, this._vm.lineheight);
 
         Editor.Ipc.sendToMain( 'editor:console-query', (err,results) => {
             Manager.addItems(results);

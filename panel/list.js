@@ -3,7 +3,7 @@
 const ConsoleItem = require(Editor.url('packages://console/panel/item'));
 
 exports.template = `
-<section v-init="messages" v-on:scroll="onScroll">
+<section v-init="{messages: messages, lineheight: lineheight}" v-on:scroll="onScroll">
 
     <!--<console-item id=""></console-item>-->
 
@@ -19,6 +19,8 @@ exports.template = `
              v-bind:rows="item.rows"
              v-bind:fold="item.fold"
              v-bind:num="item.num"
+             v-bind:lineheight="lineheight"
+             v-bind:fontsize="fontsize"
              v-show="item.show"
          ></console-item>
         </template>
@@ -27,12 +29,12 @@ exports.template = `
 </section>
 `;
 
-
-var getHeight = function (list) {
+// 新添加一个参数 itemHeight，行高为可变的。
+var getHeight = function (list, itemHeight) {
     var height = 0;
     list.forEach((item) => {
         if (item.fold) {
-            height += 30;
+            height += itemHeight;
         } else {
             height += item.rows * 26 + 14;
         }
@@ -40,7 +42,7 @@ var getHeight = function (list) {
     return height;
 };
 
-exports.props = ['messages'];
+exports.props = ['messages','fontsize','lineheight'];
 
 exports.components = {
     'console-item': ConsoleItem
@@ -75,9 +77,10 @@ exports.methods = {
 
         var tmp = 0;
         var index = 0;
+        var itemHeight = this.lineheight;
         list.some((item, i) => {
             if (item.fold) {
-                tmp += 30;
+                tmp += itemHeight;
             } else {
                 tmp += item.rows * 26 + 14;
             }
@@ -107,6 +110,7 @@ exports.methods = {
     },
     onUpdateFold (y, fold) {
         var index = 0;
+        var itemHeight = this.lineheight;
         for (var j = 0; j < this.messages.length; j++) {
             if (this.messages[j].translateY === y) {
                 index = j;
@@ -116,7 +120,7 @@ exports.methods = {
 
         var source = this.messages[index++];
         source.fold = fold;
-        var offsetY = source.rows * 26 + 14 - 30;
+        var offsetY = source.rows * 26 + 14 - itemHeight;
         if (fold) {
             offsetY = -offsetY;
         }
@@ -127,7 +131,7 @@ exports.methods = {
         }
 
         // 计算总高度
-        this.sectionStyle.height = getHeight(this.messages);
+        this.sectionStyle.height = getHeight(this.messages, itemHeight);
 
         this.onScroll({ target: this.$el });
     }
@@ -137,13 +141,15 @@ var scrollTimer = null;
 var scrollNumCache = null;
 
 exports.directives = {
-    init (list) {
+    init (obj) {
         // 计算总高度
-        var height = getHeight(list);
+        var itemHeight = obj.lineheight;
+        var list = obj.messages;
+        var height = getHeight(list, itemHeight);
         this.vm.sectionStyle.height = height;
 
         // 当前显示高度可以显示多少条信息
-        var num = this.vm.$el.clientHeight / 30 + 3 | 0;
+        var num = this.vm.$el.clientHeight / itemHeight + 3 | 0;
 
         // 生成 list 数组
         var dataList = this.vm.list;
@@ -154,7 +160,7 @@ exports.directives = {
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
 
-            var height = getHeight(list);
+            var height = getHeight(list, itemHeight);
 
             // 用户如果更改了滚动的 scrollTop，则不自动跳到底部
             // 如果滚动条不在页面最顶部以及最底部，则添加 log 的时候不去滚动
@@ -164,7 +170,7 @@ exports.directives = {
             scrollNumCache = list.length;
 
             var scroll;
-            if (ts !== 0 && height - tc -ts > 30 * cn) {
+            if (ts !== 0 && height - tc -ts > itemHeight * cn) {
                 scroll = this.vm.$el.scrollTop;
             } else {
                 scroll = this.vm.$el.scrollTop = height - tc
@@ -174,7 +180,7 @@ exports.directives = {
             var index = 0;
             list.some((item, i) => {
                 if (item.fold) {
-                    tmp += 30;
+                    tmp += itemHeight;
                 } else {
                     tmp += item.rows * 26 + 14;
                 }
