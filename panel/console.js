@@ -16,6 +16,8 @@ Editor.Panel.extend({
             display: flex;
             padding: 4px;
             position: relative;
+            padding-right: 88px;
+            flex-wrap: wrap;
         }
         section {
             flex: 1;
@@ -125,6 +127,10 @@ Editor.Panel.extend({
         section .item:hover {
             background: #353535;
         }
+        .select-wrap {
+            display: inline-block;
+            margin-right: 5px;
+        }
     `,
 
     template: `
@@ -148,17 +154,19 @@ Editor.Panel.extend({
                 <option value="warn">Warn</option>
                 <option value="error">Error</option>
             </ui-select>
+            <div class="select-wrap">
+                <i class="fa fa-text-width" title="Font Size" style="padding: 0.5em 0.6em"></i>
+                <ui-select :value="fontsize" @change="onChangeFontSize">
+                    <option v-for="fontsize in getSizeArr(8,20)" :value="fontsize">{{ fontsize }}</option>
+                </ui-select>
+            </div>
+            <div class="select-wrap">
+                <i class="fa fa-text-height" title="Font LineHeight" style="padding: 0.5em 0.6em;margin-left:0.1em;"></i>
+                <ui-select :value="lineheight" @change="onChangeLineHeight">
+                    <option v-for="lineheight in getSizeArr(18,36)" :value="lineheight">{{ lineheight }}</option>
+                </ui-select>            
+            </div>
             <ui-checkbox class="collapse" v-on:confirm="onCollapse" checked>Collapse</ui-checkbox>
-        </header>
-        <header>
-            <i class="fa fa-text-width" title="Font Size" style="padding: 0.4em 0.6em"></i>
-            <ui-select :value="fontsize" @change="onChangeFontSize">
-                <option v-for="fontsize in getSizeArr(8,20)" :value="fontsize">{{ fontsize }}</option>
-            </ui-select>
-            <i class="fa fa-text-height" title="Font LineHeight" style="padding: 0.4em 0.6em;margin-left:0.1em;"></i>
-            <ui-select :value="lineheight" @change="onChangeLineHeight">
-                <option v-for="lineheight in getSizeArr(18,36)" :value="lineheight">{{ lineheight }}</option>
-            </ui-select>
         </header>
         <console-list v-bind:messages="messages" :fontsize="fontsize" :lineheight="lineheight"></console-list>
     </div>
@@ -258,12 +266,13 @@ Editor.Panel.extend({
 
     ready () {
         var openLogBtn = this.$openLogBtn;
+        var self = this;
         this._vm = new Vue({
             el: this.$console,
             data: {
                 messages: [],
-                fontsize: 14,
-                lineheight: 27  // 每一行的高度
+                fontsize: self.profiles.local.data.fontsize,
+                lineheight: self.profiles.local.data.lineheight  // 每一行的高度
             },
             methods: {
                 onClear () {
@@ -287,12 +296,14 @@ Editor.Panel.extend({
                 },
                 // 改变font-size
                 onChangeFontSize (event) {
-                    this.$data.fontsize = parseInt( event.target.value );
+                    self.profiles.local.data.fontsize = this.$data.fontsize = parseInt( event.target.value );
+                    self.profiles.local.save();
                 },
                 // 改变line-height
                 onChangeLineHeight(event) {
-                    Manager.itemHeight = this.$data.lineheight = parseInt( event.target.value );
+                    self.profiles.local.data.lineheight = Manager.itemHeight = this.$data.lineheight = parseInt( event.target.value );
                     Manager.update();
+                    self.profiles.local.save();
                 },
                 // 获得select范围
                 getSizeArr (start, end) {

@@ -18,11 +18,17 @@
     "title": "i18n:MAIN_MENU.panel.console",
     "icon": "panel/icon.png",
     "height": 300,
-    "min-width": 200,
+    "min-width": 400,
     "min-height": 200,
     "shortcuts": {
       "command+k": "clear",
       "ctrl+k": "clear"
+    },
+    "profiles": {
+      "local": {
+        "fontsize": 14,
+        "lineheight": 27
+      }
     }
   }
 }
