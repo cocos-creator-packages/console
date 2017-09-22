@@ -4,7 +4,7 @@ exports.template = `
 <div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture" v-bind:fold="fold"
     v-on:mousedown="onMouseDown" 
 >
-    <div class="warp" :style="{fontSize: fontsize + 'px', lineHeight: lineheight + 'px', height: lineheight + 'px'}">
+    <div class="warp" style="font-size: inherit; line-height: inherit;">
         <div class="text">
             <span>
                 <i class="fa fa-times-circle" v-if="type==='error'"></i>
@@ -22,7 +22,7 @@ exports.template = `
     </div>
     <div class="info">
         <template v-for="item in foldInfo" track-by="$index">
-            <div>
+            <div style="font-size: inherit; line-height: inherit;">
                 <pre>{{item.info}}</pre>
                 <span class="path">{{item.path}}</span>
             </div>
@@ -37,10 +37,21 @@ exports.data = function () {
     return {
         foldInfo: [],
         style: {
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
+            fontSize: this.fontsize + 'px',
+            lineHeight: this.lineHeight + 'px'
         }
     };
 };
+
+exports.watch = {
+    fontsize: function() {
+        this.$data.style.fontSize = this.fontsize + 'px';
+    },
+    lineheight: function() {
+        this.$data.style.lineHeight = this.lineheight + 'px';
+    }
+}
 
 exports.directives = {
     init (y) {

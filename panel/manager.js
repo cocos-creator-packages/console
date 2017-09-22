@@ -122,11 +122,10 @@ exports.update = function () {
             item.translateY = offsetY;
             renderCmds.push(item);
             // 行高使用外部选择的lineheight
-            var itemHeight = exports.itemHeight;
             if (item.fold) {
-                offsetY += itemHeight;
+                offsetY += exports.itemHeight;
             } else {
-                offsetY += item.rows * 26 + 14;
+                offsetY += item.rows * exports.itemHeight + 14;
             }
         });
     });

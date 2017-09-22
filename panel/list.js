@@ -36,11 +36,30 @@ var getHeight = function (list, itemHeight) {
         if (item.fold) {
             height += itemHeight;
         } else {
-            height += item.rows * 26 + 14;
+            height += item.rows * itemHeight + 14;
         }
     });
     return height;
 };
+
+// 获得滚动位置
+// list: 所有的数据; itemHeight: 行高。
+var getScrollPosition = function(list, itemHeight, scroll) {
+    var tmp = 0;
+    var index = 0;
+    list.some((item, i) => {
+        if (item.fold) {
+            tmp += itemHeight;
+        } else {
+            tmp += item.rows * itemHeight + 14;
+        }
+        if (tmp > scroll) {
+            index = i - 1;
+            return true;
+        }
+    });
+    return index;
+}
 
 exports.props = ['messages','fontsize','lineheight'];
 
@@ -75,20 +94,8 @@ exports.methods = {
         var dataList = this.list;
         var scroll = event.target.scrollTop;
 
-        var tmp = 0;
-        var index = 0;
         var itemHeight = this.lineheight;
-        list.some((item, i) => {
-            if (item.fold) {
-                tmp += itemHeight;
-            } else {
-                tmp += item.rows * 26 + 14;
-            }
-            if (tmp > scroll) {
-                index = i - 1;
-                return true;
-            }
-        });
+        var index = getScrollPosition(list, itemHeight, scroll);
 
         dataList.forEach(function (item, i) {
             var source = list[index + i];
@@ -120,7 +127,7 @@ exports.methods = {
 
         var source = this.messages[index++];
         source.fold = fold;
-        var offsetY = source.rows * 26 + 14 - itemHeight;
+        var offsetY = source.rows * itemHeight + 14 - itemHeight;
         if (fold) {
             offsetY = -offsetY;
         }
@@ -176,19 +183,7 @@ exports.directives = {
                 scroll = this.vm.$el.scrollTop = height - tc
             }
 
-            var tmp = 0;
-            var index = 0;
-            list.some((item, i) => {
-                if (item.fold) {
-                    tmp += itemHeight;
-                } else {
-                    tmp += item.rows * 26 + 14;
-                }
-                if (tmp > scroll) {
-                    index = i - 1;
-                    return true;
-                }
-            });
+            var index = getScrollPosition(list, itemHeight, scroll)
 
             for (var i=0; i<num; i++) {
                 if (!dataList[i]) {
