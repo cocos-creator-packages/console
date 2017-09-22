@@ -1,33 +1,10 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const ConsoleItem = require(Editor.url('packages://console/panel/item'));
 
-exports.template = `
-<section v-init="{messages: messages, lineheight: lineheight}" v-on:scroll="onScroll">
-
-    <!--<console-item id=""></console-item>-->
-
-    <div v-bind:style="sectionStyle">
-    
-        <template v-for="item in list">
-            <console-item
-             v-bind:type="item.type"
-             v-bind:title="item.title"
-             v-bind:info="item.info"
-             v-bind:y="item.translateY"
-             v-bind:texture="item.texture"
-             v-bind:rows="item.rows"
-             v-bind:fold="item.fold"
-             v-bind:num="item.num"
-             v-bind:lineheight="lineheight"
-             v-bind:fontsize="fontsize"
-             v-show="item.show"
-         ></console-item>
-        </template>
-    </div>
-
-</section>
-`;
+exports.template = fs.readFileSync(path.join(__dirname, './template/list.html'), 'utf-8');
 
 // 新添加一个参数 itemHeight，行高为可变的。
 var getHeight = function (list, itemHeight) {
@@ -36,7 +13,7 @@ var getHeight = function (list, itemHeight) {
         if (item.fold) {
             height += itemHeight;
         } else {
-            height += item.rows * itemHeight + 14;
+            height += item.rows * (itemHeight - 2) + 14;
         }
     });
     return height;
@@ -51,7 +28,7 @@ var getScrollPosition = function(list, itemHeight, scroll) {
         if (item.fold) {
             tmp += itemHeight;
         } else {
-            tmp += item.rows * itemHeight + 14;
+            tmp += item.rows * (itemHeight - 2) + 14;
         }
         if (tmp > scroll) {
             index = i - 1;
@@ -127,7 +104,7 @@ exports.methods = {
 
         var source = this.messages[index++];
         source.fold = fold;
-        var offsetY = source.rows * itemHeight + 14 - itemHeight;
+        var offsetY = source.rows * (itemHeight - 2) + 14 - itemHeight;
         if (fold) {
             offsetY = -offsetY;
         }

@@ -91,6 +91,8 @@ Editor.Panel.extend({
         
         section div .warp {
             display: flex;
+            font-size: inherit;
+            line-height: inherit;
         }
         section div .text {
             position: relative;
@@ -265,14 +267,15 @@ Editor.Panel.extend({
     },
 
     ready () {
-        var openLogBtn = this.$openLogBtn;
-        var self = this;
+        let openLogBtn = this.$openLogBtn;
+        let profile = this.profiles.local || { data: {}, save () { Editor.warn('The console settings are problematic'); } };
+
         this._vm = new Vue({
             el: this.$console,
             data: {
                 messages: [],
-                fontsize: self.profiles.local.data.fontsize,
-                lineheight: self.profiles.local.data.lineheight  // 每一行的高度
+                fontsize: profile.data.fontsize || 12,
+                lineheight: profile.data.lineheight || 26,  // 每一行的高度
             },
             methods: {
                 onClear () {
@@ -296,14 +299,15 @@ Editor.Panel.extend({
                 },
                 // 改变font-size
                 onChangeFontSize (event) {
-                    self.profiles.local.data.fontsize = this.$data.fontsize = parseInt( event.target.value );
-                    self.profiles.local.save();
+                    profile.data.fontsize = this.fontsize = parseInt( event.target.value );
+                    profile.save();
                 },
                 // 改变line-height
                 onChangeLineHeight(event) {
-                    self.profiles.local.data.lineheight = Manager.itemHeight = this.$data.lineheight = parseInt( event.target.value );
+                    profile.data.lineheight = this.lineheight = parseInt( event.target.value );
+                    Manager.itemHeight = this.lineheight;
                     Manager.update();
-                    self.profiles.local.save();
+                    profile.save();
                 },
                 // 获得select范围
                 getSizeArr (start, end) {
