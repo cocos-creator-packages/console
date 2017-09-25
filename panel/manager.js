@@ -125,7 +125,7 @@ exports.update = function () {
             if (item.fold) {
                 offsetY += exports.itemHeight;
             } else {
-                offsetY += item.rows * exports.itemHeight + 14;
+                offsetY += item.rows * (exports.itemHeight - 2) + 14;
             }
         });
     });

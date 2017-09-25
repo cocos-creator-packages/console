@@ -1,0 +1,25 @@
+
+<section v-init="{messages: messages, lineheight: lineheight}" v-on:scroll="onScroll">
+
+    <!--<console-item id=""></console-item>-->
+
+    <div v-bind:style="sectionStyle">
+    
+        <template v-for="item in list">
+            <console-item
+             v-bind:type="item.type"
+             v-bind:title="item.title"
+             v-bind:info="item.info"
+             v-bind:y="item.translateY"
+             v-bind:texture="item.texture"
+             v-bind:rows="item.rows"
+             v-bind:fold="item.fold"
+             v-bind:num="item.num"
+             v-bind:lineheight="lineheight"
+             v-bind:fontsize="fontsize"
+             v-show="item.show"
+         ></console-item>
+        </template>
+    </div>
+
+</section>
