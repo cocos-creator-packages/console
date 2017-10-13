@@ -1,46 +1,31 @@
 'use strict';
 
-exports.template = `
-<div class="item" v-bind:type="type" v-init="y" v-info="info" v-bind:style="style" v-bind:texture="texture" v-bind:fold="fold"
-    v-on:mousedown="onMouseDown"
->
-    <div class="warp">
-        <div class="text">
-            <span>
-                <i class="fa fa-times-circle" v-if="type==='error'"></i>
-                <i class="fa fa-warning" v-if="type==='warn'"></i>
-            </span>
-            
-            <span title="{{title}}">
-                <i class="fold fa fa-caret-down" v-if="info&&!fold" v-on:click="onHide"></i>
-                <i class="fold fa fa-caret-right" v-if="info&&fold" v-on:click="onShow"></i>
-                {{title}}
-            </span>
-            
-        </div>
-        <span v-if="num>1">{{num}}</span>
-    </div>
-    <div class="info">
-        <template v-for="item in foldInfo" track-by="$index">
-            <div>
-                <pre>{{item.info}}</pre>
-                <span class="path">{{item.path}}</span>
-            </div>
-        </template>
-    </div>
-</div>
-`;
+const fs = require('fs');
+const path = require('path');
 
-exports.props = ['type', 'title', 'info', 'y', 'texture', 'rows', 'fold', 'num'];
+exports.template = fs.readFileSync(path.join(__dirname, './template/item.html'), 'utf-8');
+
+exports.props = ['type', 'title', 'info', 'y', 'texture', 'rows', 'fold', 'num', 'lineheight', 'fontsize'];
 
 exports.data = function () {
     return {
         foldInfo: [],
         style: {
-            transform: 'translateY(0)'
+            transform: 'translateY(0)',
+            fontSize: this.fontsize + 'px',
+            lineHeight: this.lineheight + 'px'
         }
     };
 };
+
+exports.watch = {
+    fontsize: function() {
+        this.style.fontSize = this.fontsize + 'px';
+    },
+    lineheight: function() {
+        this.style.lineHeight = this.lineheight + 'px';
+    }
+}
 
 exports.directives = {
     init (y) {
